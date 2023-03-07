@@ -1,0 +1,16 @@
+<script lang="ts" setup>
+import BasicLayout from "./layouts/BasicLayout.vue";</script>
+
+<template>
+  <div id="app">
+    <BasicLayout/>
+  </div>
+</template>
+
+<style scoped>
+#app {
+  padding: 0 0;
+  margin: 0 auto;
+  /*text-align: center*/
+}
+</style>

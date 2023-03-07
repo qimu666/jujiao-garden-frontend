@@ -1,0 +1,1 @@
+export const defaultPicture = "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/teamImg1.jpg"
