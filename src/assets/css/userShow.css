@@ -1,0 +1,25 @@
+.van-multi-ellipsis--l2 {
+    font-size: 10px;
+    margin-left: 58px;
+    margin-top: 16px;
+    color: #969799;
+}
+
+.tags {
+    float: left;
+    margin-top: 10px;
+    margin-left: 17px;
+    font-size: 14px;
+}
+
+.desc {
+    float: left;
+    margin-top: 14px;
+    margin-left: 17px;
+    font-size: 14px;
+}
+
+.van_tag {
+    margin: 2.5px 2px 2px 2px;
+    float: right;
+}

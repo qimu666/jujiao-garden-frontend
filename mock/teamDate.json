@@ -1,32 +1,185 @@
 [
   {
+    "id": 1,
     "captain": "柒木",
     "title": "第一个队伍",
     "desc": "非常帅气队伍",
-    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/22.jfif"
+    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/22.jfif",
+    "users": [
+      {
+        "id": "1",
+        "desc": "柒木",
+        "title": "帅得嘞哈哈哈哈哈哈哈哈",
+        "avatarUrl": null
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/223.jfif"
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/223.jfif"
+      }
+    ]
   },
   {
+    "id": 2,
     "captain": "柒木2222222",
-    "title": "第2个队伍2222222222222222222222222222222222222222222222222222222222222222",
+    "title": "第23个队伍22233333333333333333332222222222222222222222222222222222222222222222222222222222222",
     "desc": "非常漂亮队伍222222222",
-    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/333.jfif"
+    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/333.jfif",
+    "users": [
+      {
+        "id": "1",
+        "desc": "柒木",
+        "title": "帅得嘞哈哈哈哈哈哈哈哈",
+        "avatarUrl": null
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/223.jfif"
+      }
+    ]
   },
   {
+    "id": 3,
     "captain": "柒木",
     "title": "霸气侧漏队",
     "desc": "霸气侧漏",
-    "teamAvatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220715214837.jpg"
+    "teamAvatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220715214837.jpg",
+    "users": [
+      {
+        "id": "1",
+        "desc": "柒木",
+        "title": "帅得嘞哈哈哈哈哈哈哈哈",
+        "avatarUrl": null
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/223.jfif"
+      }
+    ]
   },
   {
+    "id": 5,
     "captain": "柒木",
     "title": "第2个队伍",
     "desc": "非常漂亮队伍222222222222222",
-    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/333.jfif"
+    "teamAvatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/333.jfif",
+    "users": [
+      {
+        "id": "1",
+        "desc": "柒木",
+        "title": "帅得嘞哈哈哈哈哈哈哈哈",
+        "avatarUrl": null
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/223.jfif"
+      }
+    ]
   },
   {
+    "id": 4,
     "captain": "柒木",
     "title": "222333d队",
     "desc": "霸气侧漏",
-    "teamAvatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220715214837.jpg"
+    "teamAvatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220715214837.jpg",
+    "users": [
+      {
+        "id": "1",
+        "desc": "柒木",
+        "title": "帅得嘞哈哈哈哈哈哈哈哈",
+        "avatarUrl": null
+      },
+      {
+        "id": "1",
+        "desc": "阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "title": "阿八八八八八气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气阿八八八八八帅气阿帅气",
+        "avatarUrl": "https://qimuu.oss-cn-beijing.aliyuncs.com/typora/%E5%BF%85%E6%9D%80%E6%8A%80.jpg"
+      },
+      {
+        "id": "2",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/222.jfif"
+      },
+      {
+        "id": "3",
+        "desc": "阿八八八八八",
+        "title": "222222222",
+        "avatarUrl": null
+      }
+    ]
   }
 ]

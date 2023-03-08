@@ -32,8 +32,8 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
-import {showToast} from "vant";
 import {useRouter} from "vue-router";
+import {showSuccessToast} from "vant";
 
 const tagSearch = ref('');
 const tagSearchList = ref([]);
@@ -72,9 +72,9 @@ const onSearch = () => {
   if (ids.includes(tagSearch.value) && !tagSearchList.value.includes(tagSearch.value)) {
     tagSearchList.value.push(tagSearch.value)
   } else if (tagSearchList.value.includes(tagSearch.value)) {
-    showToast("该标签已选择")
+    showSuccessToast("该标签已选择")
   } else {
-    showToast("不存在该标签")
+    showSuccessToast("不存在该标签")
   }
 }
 
@@ -87,7 +87,7 @@ const close = (tag) => {
 };
 
 const searchResult = () => {
-  showToast("搜索结果")
+  showSuccessToast("搜索结果")
   router.push({
     path: "/index",
     query: {
@@ -98,22 +98,5 @@ const searchResult = () => {
 </script>
 
 <style scoped>
-#tage {
-  width: 100%;
-  height: 120px;
-}
-
-.van_tag {
-  margin: 1px
-}
-
-.span_tag {
-  padding: 1px;
-}
-
-/*.has-border {*/
-/*  border: 1px solid #0094FEFF;*/
-/*  border-radius: 4px;*/
-/*}*/
-
+@import "../../assets/css/userSearch.css";
 </style>

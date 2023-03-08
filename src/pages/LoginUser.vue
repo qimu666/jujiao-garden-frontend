@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
-import {showToast} from "vant";
-
-
+import {showSuccessToast} from "vant";
 const router = useRouter()
 const username = ref('');
 const password = ref('');
 const onSubmit = async () => {
-  showToast('登陆成功')
+  showSuccessToast('登陆成功')
   await router.push("/index")
 
   // const loginUser = await request.post("/user/login", {
@@ -17,7 +15,7 @@ const onSubmit = async () => {
   // })
   // if (loginUser) {
   //   console.log(loginUser)
-  //   showToast('登陆成功')
+  //   showSuccessToast('登陆成功')
   //   await router.push("/index")
   // }
 };

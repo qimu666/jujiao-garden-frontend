@@ -4,17 +4,12 @@
                   :max-count="1"
                   :max-size="5000 * 1024"
                   @oversize="onOversize">
-      <van-image
-          :src="user?.avatarUrl?user.avatarUrl:defaultPicture"
-          fit="cover"
-          height="88px"
-          round
-          width="88px"
-      >
-        <template v-slot:error>加载失败</template>
-      </van-image>
+      <div class="center">
+        <img class="img" :src="user.avatarUrl ? user.avatarUrl :defaultPicture ">
+      </div>
     </van-uploader>
   </div>
+  <van-divider>{{user.username}}</van-divider>
   <van-cell :value="user.username" icon="manager-o" is-link
             @click="update(user.username,'昵称','username')">
     <template #title>
@@ -51,6 +46,7 @@
       <span class="custom-title">角色</span>
     </template>
   </van-cell>
+  <copyright/>
 </template>
 
 <script lang="ts" setup>
@@ -97,7 +93,7 @@ const u = {
 const user: Ref<User> = ref(u)
 const update = (val: string, name: string, field: string) => {
   router.push({
-    path: "/user_edit",
+    path: "/user/edit",
     query: {
       title: name,
       value: val,
@@ -114,20 +110,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.custom-title {
-  margin-right: 4px;
-  vertical-align: middle;
-}
+@import "../assets/css/userPage.css";
+@import "../assets/css/public.css";
 
-.center {
-  margin-top: 40px;
-  margin-bottom: 25px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-icon {
-  font-size: 16px;
-  line-height: inherit;
-}
 </style>

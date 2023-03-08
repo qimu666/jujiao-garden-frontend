@@ -1,0 +1,33 @@
+#card {
+    padding: 0.1px 16px;
+}
+
+.card :deep(.van-card__title) {
+    margin-top: 3px;
+    font-size: 13px;
+}
+
+.tag {
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin: 1px 2px 4px 2px;
+    padding: 2px;
+    color: rgb(245, 67, 67)
+}
+
+:deep(.van-image__img) {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.van-card {
+    border-radius: 10px;
+    margin: 0;
+    padding: 0.10px;
+}
+
+.delete-button {
+    border-radius: 10px;
+    height: 100%;
+    width: 70px;
+}

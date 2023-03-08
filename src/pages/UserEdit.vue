@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
-import {showConfirmDialog, showToast} from "vant";
+import {showConfirmDialog, showSuccessToast} from "vant";
 
 const router = useRouter()
 const route = useRoute()
@@ -34,7 +34,7 @@ const onSubmit = () => {
   showConfirmDialog({
     message: '请确认当前' + title.value + '是否修改为' + editValue.value + '?',
   }).then(() => {
-    showToast("修改成功")
+    showSuccessToast("修改成功")
     router.push({
       path: "/user",
       query: {
@@ -43,7 +43,7 @@ const onSubmit = () => {
       }
     })
   }).catch(() => {
-    showToast("取消修改")
+    showSuccessToast("取消修改")
   });
 
 };
