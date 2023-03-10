@@ -1,20 +1,21 @@
 <template>
   <div v-if="teamList.length <=0" class="null">
-    <van-empty  image="search" description="暂无数据"/>
+    <van-empty image="search" description="暂无数据"/>
   </div>
   <div v-for="team in teamList">
     <van-card
-        :desc="team.desc"
+        :desc="team.teamDesc"
         :thumb="team.teamAvatarUrl"
-        :title="team.title"
+        :title="team.teamName"
     >
       <template #tags>
         <van-tag plain style="color: #ee0a24; margin-right: 8px; margin-top: 8px" type="primary">公开</van-tag>
         <van-tag plain style="color: #ff976a;margin-right: 8px; margin-top: 8px" type="primary">
-          队长：{{ team.captain }}
+          队长：{{ team.userId }}
         </van-tag>
         <div style="padding-top: 3px">
-          队伍人数：{{ 4 }} / {{ 5 }}
+          队伍人数：{{ team.maxNum }}
+          <!--          {{ 4 }} / {{ 5 }}-->
         </div>
         <div style="padding-top: 3px">
           创建时间：{{ 2022 }}年 {{ 3 }}月 &nbsp; {{ 7 }}日&nbsp{{ 18 }}:{{ 34 }}:{{ 34 }}
@@ -27,10 +28,10 @@
       </template>
       <template #footer>
         <div style="margin-left: 103px">
-        <span v-for="user of team.users.slice(0, 5)">
-          <img :alt="user.title" :src="user.avatarUrl ? user.avatarUrl:defaultPicture" class="usersImgUrl">
+        <span v-for="user of team.userList.slice(0, 5)">
+          <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
         </span>
-          <span v-if="team.users.length>4" class="omit">
+          <span v-if="team.userList.length>4" class="omit">
                ...
           </span>
         </div>
@@ -42,19 +43,22 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import teamData from '../../mock/teamDate.json'
+<script setup>
 import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
 import getCurrent from "../service/currentUser";
+import request from "../service/myAxios";
+import qs from "qs";
 
+const route = useRoute()
 const router = useRouter()
 
-const teamList = ref(teamData)
+const teamList = ref([])
+const teamId = ref([])
 
-const showTeam = (id: number) => {
+const showTeam = (id) => {
   router.push({
     name: "teamShow",
     params: {teamId: id},
@@ -66,8 +70,25 @@ const addTeam = () => {
   showSuccessToast("成功加入队伍")
 }
 const addStatus = ref(true)
-onMounted(() => {
-  getCurrent()
+onMounted(async () => {
+  await getCurrent()
+  const {teamsId} = route.query
+  if (teamsId) {
+    const teamsById = await request.get("/team/teamsById", {
+      params: {
+        teamId: teamsId,
+      }, paramsSerializer: {
+        serialize: (params) => {
+          return qs.stringify(params, {indices: false})
+        }
+      }
+    })
+    teamList.value = teamsById.teamList
+  } else {
+    const teams = await request.get("/team/teams")
+    console.log(teams.teamList)
+    teamList.value = teams.teamList
+  }
 })
 </script>
 

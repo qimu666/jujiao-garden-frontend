@@ -24,6 +24,9 @@ request.interceptors.response.use(function (response) {
     } else if (data.code === 40100) {
         showFailToast("账号状态异常请重新登录")
         toLogin()
+    } else if (data.code === 40101) {
+        showFailToast("无权限")
+        toLogin()
     } else {
         showFailToast(data.description)
     }

@@ -58,7 +58,7 @@
 
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 import {showFailToast, showSuccessToast} from "vant";
 import {defaultPicture} from "../common/userCommon";
 import getCurrent from "../service/currentUser";
@@ -72,21 +72,7 @@ const afterRead = (file) => {
 const onOversize = () => {
   showFailToast("头像上传大小不能超过500kb")
 }
-
-const route = useRoute()
 const router = useRouter()
-
-
-// const u = {
-//   "username": "柒木",
-//   "userAccount": "qimuu",
-//   "avatarUrl": "https://typor-1305950889.cos.ap-guangzhou.myqcloud.com/typory/444.jfif",
-//   "gender": "男",
-//   "phone": "13211235312",
-//   "email": "248918282@qq.com",
-//   "createTime": "2023-03-06T12:06:53.000+00:00",
-//   "userRole": roleEnum[1]
-// }
 const user = ref({})
 const update = (val: string, name: string, field: string) => {
   router.push({
