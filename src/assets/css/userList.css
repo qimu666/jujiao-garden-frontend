@@ -4,7 +4,7 @@
 
 .card :deep(.van-card__title) {
     margin-top: 3px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .tag {

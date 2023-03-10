@@ -55,14 +55,19 @@
   <!--  </van-popover>-->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useRoute} from "vue-router";
 import UserList from "../components/UserList.vue";
+import {onMounted} from "vue";
+import getCurrent from "../service/currentUser.js";
 
 const route = useRoute()
-const teamId = route.params.teamId
+const teamId = JSON.parse(route.params.teamId)
 console.log(teamId)
 const team = teamId
+onMounted(() => {
+  getCurrent()
+})
 </script>
 
 <style scoped>

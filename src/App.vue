@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import BasicLayout from "./layouts/BasicLayout.vue";</script>
+import BasicLayout from "./layouts/BasicLayout.vue";
+
+</script>
 
 <template>
   <div id="app">
-    <BasicLayout/>
+      <BasicLayout/>
   </div>
+  <div class="van-safe-area-bottom"></div>
 </template>
 
 <style scoped>

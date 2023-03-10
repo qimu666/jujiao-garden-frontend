@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {showSuccessToast} from "vant";
 import {useRouter} from "vue-router";
 import TeamList from "../components/TeamList.vue";

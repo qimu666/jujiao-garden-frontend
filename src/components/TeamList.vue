@@ -1,4 +1,7 @@
 <template>
+  <div v-if="teamList.length <=0" class="null">
+    <van-empty  image="search" description="暂无数据"/>
+  </div>
   <div v-for="team in teamList">
     <van-card
         :desc="team.desc"
@@ -41,10 +44,11 @@
 
 <script setup lang="ts">
 import teamData from '../../mock/teamDate.json'
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
 import {useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
+import getCurrent from "../service/currentUser";
 
 const router = useRouter()
 
@@ -58,10 +62,13 @@ const showTeam = (id: number) => {
   showSuccessToast("查看队伍")
 }
 const addTeam = () => {
-  addStatus.value=false
+  addStatus.value = false
   showSuccessToast("成功加入队伍")
 }
 const addStatus = ref(true)
+onMounted(() => {
+  getCurrent()
+})
 </script>
 
 <style scoped>
