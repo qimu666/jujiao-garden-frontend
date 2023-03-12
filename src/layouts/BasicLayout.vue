@@ -9,7 +9,6 @@
       <router-view/>
       </van-pull-refresh>
     </div>
-  <div style="padding-bottom:60px"></div>
   <van-tabbar route>
     <van-tabbar-item icon="search" name="index" replace to="/">推荐</van-tabbar-item>
     <van-tabbar-item icon="home-o" name="team" replace to="/team">队伍</van-tabbar-item>
@@ -41,7 +40,7 @@ const onRefresh = () => {
 
 <style scoped>
 #center {
-  margin: 0 0;
-  padding: 0 0;
+  margin: 0;
+  padding-bottom: 60px;
 }
 </style>

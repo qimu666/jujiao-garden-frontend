@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
@@ -14,6 +14,7 @@ const onSubmit = async () => {
     "userPassword": password.value
   })
   if (loginUser) {
+    sessionStorage.setItem("longUser", loginUser ? JSON.stringify(loginUser) : undefined)
     showSuccessToast('登陆成功')
     await router.push("/")
   }

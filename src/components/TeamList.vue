@@ -1,5 +1,5 @@
 <template>
-  <div v-if="teamList.length <=0" class="null">
+  <div v-if="!teamList||teamList.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
   <div v-for="team in teamList">
@@ -11,17 +11,17 @@
       <template #tags>
         <van-tag plain style="color: #ee0a24; margin-right: 8px; margin-top: 8px" type="primary">公开</van-tag>
         <van-tag plain style="color: #ff976a;margin-right: 8px; margin-top: 8px" type="primary">
-          队长：{{ team.userId }}
+          队长：{{ team.user.username }}
         </van-tag>
         <div style="padding-top: 3px">
-          队伍人数：{{ team.maxNum }}
+          队伍人数：{{ team.userList.length }}/{{ team.maxNum }}
           <!--          {{ 4 }} / {{ 5 }}-->
         </div>
         <div style="padding-top: 3px">
-          创建时间：{{ 2022 }}年 {{ 3 }}月 &nbsp; {{ 7 }}日&nbsp{{ 18 }}:{{ 34 }}:{{ 34 }}
+          {{ '创建时间：' + team.createTime }}
         </div>
         <div style="padding-top: 3px">
-          过期时间：{{ 2022 }}年 {{ 3 }}月 {{ 17 }}日 18:34:34
+          {{ '过期时间：' + team.expireTime }}
         </div>
         <div style="margin-top: 12px;"></div>
 
@@ -86,7 +86,6 @@ onMounted(async () => {
     teamList.value = teamsById.teamList
   } else {
     const teams = await request.get("/team/teams")
-    console.log(teams.teamList)
     teamList.value = teams.teamList
   }
 })

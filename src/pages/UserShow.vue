@@ -2,6 +2,7 @@
   <div class="center">
     <img class="img" :src="user.userAvatarUrl?user.userAvatarUrl:defaultPicture">
   </div>
+  <div style="padding-top: 20px"/>
   <van-cell :value="user.username" icon="manager-o">
     <template #title>
       <span class="custom-title">昵称</span>
@@ -80,8 +81,6 @@ const teams = () => {
 }
 
 const addUser = () => {
-  const {...a} = user.value.teamIds
-  console.log(a);
   showSuccessToast("添加成功")
 }
 onMounted(async () => {
@@ -92,10 +91,6 @@ onMounted(async () => {
 <style scoped>
 @import "../assets/css/userShow.css";
 @import "../assets/css/public.css";
-
-.omit {
-  margin-left: -2px;
-}
 
 :deep(.van-popup--center) {
   max-width: none;

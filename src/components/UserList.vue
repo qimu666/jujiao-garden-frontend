@@ -1,5 +1,5 @@
 <template>
-  <div v-if="users.length <=0" class="null">
+  <div v-if="!users||users.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
   <div v-if="users.length >0 && users">
@@ -14,13 +14,15 @@
           <template #tags>
             <div v-if="user.tags.length<8" style="margin-bottom: 12px"></div>
             标签：<br>
-            <van-tag v-for="tag in user.tags" class="tag" plain type="primary">
+            <van-tag v-for="tag in user.tags" style="color: rgb(245, 67, 67)" class="tag" plain type="primary">
               {{ tag }}
             </van-tag>
           </template>
         </van-card>
         <template #right>
           <van-button class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
+          <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"
+                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
         </template>
       </van-swipe-cell>
       <div style="padding-top: 5px"></div>
@@ -33,7 +35,7 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {showNotify, showSuccessToast} from "vant";
+import {showConfirmDialog, showNotify, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
 import {defaultPicture} from "../common/userCommon";
 import request from "../service/myAxios";
@@ -44,6 +46,7 @@ const router = useRouter()
 const show_pop = ref("true")
 const users = ref({})
 const currentPage = ref(1);
+const loginUser = ref({})
 
 const {tags} = route.query
 
@@ -51,6 +54,23 @@ const {tags} = route.query
 const addUser = () => {
   showSuccessToast('添加');
 }
+const deleteUser = (userId) => {
+  showConfirmDialog({
+    title: "删除用户",
+    message:
+        '确认删除该用户？',
+  })
+      .then(async () => {
+        await request.post(`/user/delete?id=${userId}`).then(e => {
+          if (e) {
+            showSuccessToast("删除成功")
+            users.value = users.value.filter(user => user.id !== userId)
+          }
+        })
+      })
+
+}
+
 const showUser = (id) => {
   router.push({
     name: 'userShow',
@@ -59,7 +79,6 @@ const showUser = (id) => {
     }
   })
 }
-
 const page = ref(1) // 当前页码
 const loading = ref(false) // 是否正在加载数据
 
@@ -125,12 +144,13 @@ onMounted(async () => {
     show_pop.value = "false"
     sessionStorage.setItem('show_pop', show_pop.value)
   }
+  loginUser.value = sessionStorage.getItem("longUser") ? JSON.parse(sessionStorage.getItem("longUser")) : undefined
 })
 
 const jsonParse = (usersList) => {
   usersList.forEach(user => {
     if (user.tags) {
-      user.tags = JSON.parse(user.tags);
+      user.tags = JSON.parse(user.tags ? user.tags : '该用户暂未设置');
     }
   })
 }
@@ -139,4 +159,11 @@ const jsonParse = (usersList) => {
 @import "../assets/css/userList.css";
 @import "../assets/css/public.css";
 
+.tag {
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  margin: 1px 2px 4px 2px;
+  padding: 2px;
+}
 </style>

@@ -20,9 +20,9 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use(function (response) {
     const data = response.data;
     if (data.code === 0) {
-        return data.data
+        return data?.data
     } else if (data.code === 40100) {
-        showFailToast("账号状态异常请重新登录")
+        showFailToast("请先登录")
         toLogin()
     } else if (data.code === 40101) {
         showFailToast("无权限")
