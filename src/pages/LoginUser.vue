@@ -4,6 +4,7 @@ import {useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
+import Copyright from "../components/Copyright.vue";
 
 const router = useRouter()
 const username = ref('');
@@ -58,6 +59,7 @@ const onSubmit = async () => {
       </div>
     </van-form>
   </div>
+  <copyright/>
 </template>
 
 <style scoped>

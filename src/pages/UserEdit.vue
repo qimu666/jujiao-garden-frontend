@@ -61,7 +61,7 @@ import {showConfirmDialog, showSuccessToast} from "vant";
 import getCurrent from "../service/currentUser"
 import {genderMap, roleMap} from "../model/userMap";
 import request from "../service/myAxios";
-import {gender, genderId, role, roleId} from "../constants/user";
+import {gender, genderId, role, roleId} from "../enum/userEnum";
 
 const router = useRouter()
 const route = useRoute()

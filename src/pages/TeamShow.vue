@@ -63,7 +63,6 @@ import getCurrent from "../service/currentUser.js";
 
 const route = useRoute()
 const teamId = JSON.parse(route.params.teamId)
-console.log(teamId)
 const team = teamId
 onMounted(() => {
   getCurrent()

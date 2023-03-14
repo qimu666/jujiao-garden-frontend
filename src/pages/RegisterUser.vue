@@ -6,7 +6,8 @@
   <van-row justify="center">
     <h3>"聚交园 —— 寻找志同道合的朋友"</h3>
   </van-row>
-  <van-uploader class="uploaderCenter" :after-read="afterRead"/>
+  <van-divider></van-divider>
+  <!--  <van-uploader class="uploaderCenter" :after-read="afterRead"/>-->
   <div>
     <van-form @submit="onSubmit">
       <van-cell-group inset>
@@ -49,6 +50,7 @@
       </div>
     </van-form>
   </div>
+  <copyright/>
 </template>
 <script lang="ts" setup>
 import {ref} from "vue";
@@ -56,6 +58,7 @@ import {useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
+import Copyright from "../components/Copyright.vue";
 
 const router = useRouter()
 const userAccount = ref('');

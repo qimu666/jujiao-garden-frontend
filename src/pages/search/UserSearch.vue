@@ -26,22 +26,29 @@
   />
   <van-divider/>
   <van-space direction="vertical" fill>
-    <van-button block type="primary" @click="searchResult">搜索</van-button>
+    <van-button v-if="userId" block type="primary" @click="updateTag">修改
+    </van-button>
+    <van-button block v-else type="primary" @click="searchResult">搜索</van-button>
   </van-space>
 </template>
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {showFailToast, showSuccessToast} from "vant";
 import getCurrent from "../../service/currentUser";
 import userTagsList from "../../constants/UserTagsList";
+import request from "../../service/myAxios";
 
 const newTagSearch = ref('');
 const existedTagSearchList = ref([]);
 const activeIndex = ref(0);
 const show = ref(true);
 const router = useRouter()
+const route = useRoute()
+const userId = ref();
+const userTags = ref([]);
+
 
 const ids = userTagsList.flatMap(item => item.children.map(child => child.id));
 const toUpperCaseTags = ids.map(id => id.charAt(0).toUpperCase() + id.slice(1));
@@ -80,7 +87,22 @@ const searchResult = () => {
     showFailToast("未选择标签")
   }
 }
+const updateTag = async () => {
+  const update = await request.post("/user/update/tags", {
+    id: userId.value,
+    tagList: existedTagSearchList.value
+  })
+  if (update && update >= 1) {
+    await router.push("/user")
+  }
+}
 onMounted(() => {
+  const {id, tags} = route.query
+  if (id && tags) {
+    userId.value = id;
+    userTags.value = tags
+    existedTagSearchList.value = tags
+  }
   getCurrent()
 })
 </script>

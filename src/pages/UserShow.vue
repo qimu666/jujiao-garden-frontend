@@ -2,7 +2,7 @@
   <div class="center">
     <img class="img" :src="user.userAvatarUrl?user.userAvatarUrl:defaultPicture">
   </div>
-  <div style="padding-top: 20px"/>
+  <div style="padding-top: 15px"/>
   <van-cell :value="user.username" icon="manager-o">
     <template #title>
       <span class="custom-title">昵称</span>

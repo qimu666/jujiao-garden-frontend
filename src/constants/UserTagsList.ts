@@ -22,22 +22,7 @@ export default UserTagsList = [
             {text: '大三', id: '大三'},
         ],
     },
-    {
-        text: '学习方向',
-        children: [
-            {text: 'Java', id: 'Java'},
-            {text: 'C', id: 'C'},
-            {text: 'C++', id: 'C++'},
-            {text: 'go', id: 'go'},
-            {text: 'C#', id: 'C#'},
-            {text: 'python', id: 'python'},
-            {text: 'php', id: 'php'},
-            {text: '网络安全', id: '网络安全'},
-            {text: '运维', id: '运维'},
-            {text: '架构师', id: '架构师'},
-            {text: 'Vue', id: 'Vue'},
-        ],
-    },
+
     {
         text: '运动',
         children: [
@@ -58,6 +43,35 @@ export default UserTagsList = [
             {text: '学习中', id: '学习中'},
             {text: '上班族', id: '上班族'},
             {text: '找伙伴', id: '找伙伴'},
+        ],
+    }, {
+        text: '学习方向',
+        children: [
+            {text: 'Java', id: 'Java'},
+            {text: 'C', id: 'C'},
+            {text: 'C++', id: 'C++'},
+            {text: 'go', id: 'go'},
+            {text: 'C#', id: 'C#'},
+            {text: 'python', id: 'python'},
+            {text: 'php', id: 'php'},
+            {text: '网络安全', id: '网络安全'},
+            {text: '运维', id: '运维'},
+            {text: '架构师', id: '架构师'},
+            {text: 'Vue', id: 'Vue'},
+        ],
+    }, {
+        text: '兴趣爱好',
+        children: [
+            {text: '音乐', id: '音乐'},
+            {text: '运动', id: '运动'},
+            {text: '旅游', id: '旅游'},
+            {text: '美食', id: '美食'},
+            {text: '电影', id: '电影'},
+            {text: '读书', id: '读书'},
+            {text: '摄影', id: '摄影'},
+            {text: '游戏', id: '游戏'},
+            {text: '手工', id: '手工'},
+            {text: '绘画', id: '绘画'},
         ],
     },
 ]

@@ -1,11 +1,12 @@
 .center {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
 }
 
 .img {
     box-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
-    height: 140px;
     border-radius: 20%;
+    height: 135px;
+    width: 135px;
 }
