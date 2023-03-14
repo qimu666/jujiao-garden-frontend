@@ -16,7 +16,7 @@
       <span v-for="tage in existedTagSearchList">
     <van-tag :show="show" class="van_tag" closeable size="large" type="primary"
              @close="close(tage)">{{ tage }}</van-tag>
-  </span>
+    </span>
     </div>
   </div>
   <van-tree-select
@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {showFailToast, showSuccessToast} from "vant";
 import getCurrent from "../../service/currentUser";
@@ -49,14 +49,12 @@ const route = useRoute()
 const userId = ref();
 const userTags = ref([]);
 
-
 const ids = userTagsList.flatMap(item => item.children.map(child => child.id));
 const toUpperCaseTags = ids.map(id => id.charAt(0).toUpperCase() + id.slice(1));
 
 const onSearch = () => {
   const newTagUpperCase = newTagSearch.value.charAt(0).toUpperCase() + newTagSearch.value.slice(1)
   const existedTagSearchListUpperCase = existedTagSearchList.value.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1));
-
   if (toUpperCaseTags.includes(newTagUpperCase) && !existedTagSearchListUpperCase.includes(newTagUpperCase)) {
     existedTagSearchList.value.push(newTagUpperCase)
   } else if (existedTagSearchListUpperCase.includes(newTagUpperCase)) {
@@ -105,6 +103,13 @@ onMounted(() => {
   }
   getCurrent()
 })
+watch(existedTagSearchList, (newList) => {
+  if (newList.length > 12) {
+    showFailToast("最多只能选择12个标签")
+    existedTagSearchList.value = existedTagSearchList.value.slice(0, 12)
+  }
+});
+
 </script>
 
 <style scoped>
