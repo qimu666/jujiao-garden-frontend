@@ -33,6 +33,7 @@
   <div v-if="!userSet||userSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
+  <van-divider  :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }" content-position="left">队员</van-divider>
   <div v-if="userSet.length >0 && userSet">
     <div v-for="user in userSet" id="card" class="card">
       <van-swipe-cell>
@@ -75,7 +76,7 @@ const team = ref({})
 const user = ref({})
 const userSet = ref([])
 const route = useRoute()
-const teamId = JSON.parse(route.params.teamId)
+const teamId = JSON.parse(route.query.teamId)
 
 onMounted(async () => {
   await getCurrent()

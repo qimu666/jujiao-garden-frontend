@@ -3,7 +3,7 @@
     <van-empty image="search" description="暂无数据"/>
   </div>
   <div v-else>
-    <van-divider>-.-</van-divider>
+    <div style="padding-top: 5px"/>
     <van-cell :value="user.username" icon="manager-o" is-link
               @click="update(user.username,'昵称','username')">
       <template #title>
@@ -32,6 +32,12 @@
               @click="update(user.gender,'性别','gender')">
       <template #title>
         <span class="custom-title">性别</span>
+      </template>
+    </van-cell>
+    <van-cell value="点击修改" icon="eye-o" is-link
+              @click="updatePassword(user.id)">
+      <template #title>
+        <span class="custom-title">修改密码</span>
       </template>
     </van-cell>
     <van-cell v-if="user.userRole===1" :value="roleMap[user.userRole]" icon="cluster-o" is-link
@@ -71,9 +77,7 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import {showSuccessToast} from "vant";
 import getCurrent from "../service/currentUser";
-import request from "../service/myAxios";
 import {genderMap, roleMap} from "../model/userMap";
 
 const router = useRouter()
@@ -100,12 +104,23 @@ const tagUpdate = (tags: string, id: number, field: string) => {
     }
   })
 }
+
+const updatePassword = (id: number) => {
+  router.push({
+    path: "/user/more/password",
+    query: {
+      id: id,
+    }
+  })
+}
+
+
 onMounted(async () => {
   user.value = await getCurrent()
 })
 
 const goToUser = async () => {
-    router.replace("/user").catch(e => console.log(e))
+  router.replace("/user").catch(e => console.log(e))
 }
 </script>
 

@@ -59,9 +59,10 @@ const teamSet = ref([])
 const teamId = ref([])
 
 const showTeam = (id) => {
+  teamId.value.push(id)
   router.push({
     name: "teamShow",
-    params: {teamId: id},
+    query: {teamId: teamId.value},
   })
 }
 const addTeam = () => {
@@ -73,7 +74,7 @@ onMounted(async () => {
   await getCurrent()
   const {teamsId} = route.query
   if (teamsId) {
-    const teamsById = await request.get("/team/teamsById", {
+    const teamsById = await request.get("/team/teamsByIds", {
       params: {
         teamId: teamsId,
       }, paramsSerializer: {

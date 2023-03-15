@@ -100,7 +100,7 @@ const onSubmit = () => {
   showConfirmDialog({
     message: '请确认当前' + title.value + '是否修改为' + editValue.value + '?',
   }).then(async () => {
-    const updateData = await request.post("/user/update/user", {
+    const updateData = await request.post("/user/update", {
       id: id.value,
       [field.value]: UpdateValue()
     })
