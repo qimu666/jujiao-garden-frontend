@@ -35,7 +35,7 @@
 import {onMounted, ref} from "vue";
 import {showConfirmDialog, showNotify, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
-import {defaultPicture} from "../common/userCommon";
+import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import request from "../service/myAxios";
 import qs from 'qs'
 
@@ -102,12 +102,12 @@ onMounted(async () => {
         }
     )
     users.value = searchTagsList
-    jsonParse(searchTagsList)
+    jsonParseTag(searchTagsList)
   } else {
     const userList = await request.get("/user/search")
     if (userList) {
       users.value = userList
-      jsonParse(userList)
+      jsonParseTag(userList)
     }
   }
   const show_session = sessionStorage.getItem("show_pop")
@@ -121,13 +121,6 @@ onMounted(async () => {
 })
 
 
-const jsonParse = (usersList) => {
-  usersList.forEach(user => {
-    if (user.tags) {
-      user.tags = user.tags ? JSON.parse(user.tags) : '该用户暂未设置';
-    }
-  })
-}
 </script>
 <style scoped>
 @import "../assets/css/userList.css";

@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!teamList||teamList.length <=0" class="null">
+  <div v-if="!teamSet||teamSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
-  <div v-for="team in teamList">
+  <div v-for="team in teamSet">
     <van-card
         :desc="team.teamDesc"
         :thumb="team.teamAvatarUrl"
@@ -14,7 +14,7 @@
           队长：{{ team.user.username }}
         </van-tag>
         <div style="padding-top: 3px">
-          队伍人数：{{ team.userList.length }}/{{ team.maxNum }}
+          队伍人数：{{ team.userSet.length }}/{{ team.maxNum }}
           <!--          {{ 4 }} / {{ 5 }}-->
         </div>
         <div style="padding-top: 3px">
@@ -28,10 +28,10 @@
       </template>
       <template #footer>
         <div style="margin-left: 103px">
-        <span v-for="user of team.userList.slice(0, 5)">
+        <span v-for="user of team.userSet.slice(0, 5)">
           <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
         </span>
-          <span v-if="team.userList.length>4" class="omit">
+          <span v-if="team.userSet.length>4" class="omit">
                ...
           </span>
         </div>
@@ -55,7 +55,7 @@ import qs from "qs";
 const route = useRoute()
 const router = useRouter()
 
-const teamList = ref([])
+const teamSet = ref([])
 const teamId = ref([])
 
 const showTeam = (id) => {
@@ -63,7 +63,6 @@ const showTeam = (id) => {
     name: "teamShow",
     params: {teamId: id},
   })
-  showSuccessToast("查看队伍")
 }
 const addTeam = () => {
   addStatus.value = false
@@ -83,10 +82,10 @@ onMounted(async () => {
         }
       }
     })
-    teamList.value = teamsById.teamList
+    teamSet.value = teamsById.teamSet
   } else {
     const teams = await request.get("/team/teams")
-    teamList.value = teams.teamList
+    teamSet.value = teams.teamSet
   }
 })
 </script>

@@ -25,8 +25,8 @@ request.interceptors.response.use(function (response) {
         showFailToast("请先登录")
         toLogin()
     } else if (data.code === 40101) {
-        showFailToast("无权限")
-        toLogin()
+        showFailToast(data.description)
+        router.back()
     } else {
         showFailToast(data.description)
     }

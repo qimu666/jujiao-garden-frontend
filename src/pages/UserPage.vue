@@ -64,15 +64,15 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import {showConfirmDialog, showFailToast, showSuccessToast} from "vant";
+import {showConfirmDialog, showFailToast, showNotify, showSuccessToast} from "vant";
 import {defaultPicture} from "../common/userCommon";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
-import {genderMap, roleMap} from "../model/userMap";
+import {UserType} from "../model/user";
 
 const router = useRouter()
-const user = ref({})
-const activeNames = ref(['1']);
+const user = ref<UserType>()
+
 
 const afterRead = async (file) => {
   showConfirmDialog({
@@ -118,8 +118,17 @@ const tagUpdate = (tags: string, id: number, field: string) => {
     }
   })
 }
+const show_pop = ref("true")
+
 onMounted(async () => {
   user.value = await getCurrent()
+  const show_updateUserAvatarUrl = sessionStorage.getItem("userAvatarUrl")
+  show_pop.value = show_updateUserAvatarUrl ? show_updateUserAvatarUrl : show_pop.value
+  if (!user.value.userAvatarUrl && show_pop.value === "true") {
+    showNotify({message: '点击头像可更换默认头像', type: "primary", duration: 1000});
+    show_pop.value = "false"
+    sessionStorage.setItem('userAvatarUrl', show_pop.value)
+  }
 })
 const toMore = () => {
   router.push("/user/more")
@@ -132,6 +141,8 @@ const loginOut = async () => {
     router.replace("/user/login").catch(e => console.log(e))
   }
 }
+
+
 </script>
 
 <style scoped>
