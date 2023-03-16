@@ -35,8 +35,17 @@
                ...
           </span>
         </div>
-        <van-button v-if="addStatus" plain size="small" type="primary" @click="addTeam">加入队伍</van-button>
-        <van-button plain size="small" type="default" @click="showTeam(team.id)">查看队伍</van-button>
+        <span v-if="!isUserInTeam(team)">
+        <van-button plain size="mini" type="primary" icon="plus" @click="joinTeam(team.id)">加入队伍
+        </van-button>
+        <van-button plain size="mini" type="default" icon="eye-o" @click="showTeam(team.id)">查看队伍</van-button>
+        </span>
+        <span v-if="isUserInTeam(team)">
+        <van-button plain size="mini" type="danger" icon="close" @click="quitTeam(team.id)">退出队伍
+        </van-button>
+        <van-button plain size="mini" type="primary" icon="replay" @click="updateTeam(team.id)">更新队伍</van-button>
+        </span>
+
       </template>
     </van-card>
     <div style="padding-top:4px "></div>
@@ -54,10 +63,9 @@ import qs from "qs";
 
 const route = useRoute()
 const router = useRouter()
-
+const loginUser = ref({})
 const teamSet = ref([])
 const teamId = ref([])
-
 const showTeam = (id) => {
   teamId.value.push(id)
   router.push({
@@ -65,13 +73,41 @@ const showTeam = (id) => {
     query: {teamId: teamId.value},
   })
 }
-const addTeam = () => {
-  addStatus.value = false
-  showSuccessToast("成功加入队伍")
+// 使用Vue的响应式数据机制更新队伍信息
+const joinTeam = async (tid) => {
+  const joinTeamUser = await request.post("/team/join", {
+    teamId: tid,
+    password: null
+  })
+  if (joinTeamUser) {
+    showSuccessToast("加入成功")
+    // 更新队伍信息
+    teamSet.value.forEach(team => {
+      if (team.id === tid) {
+        team.userSet.push(joinTeamUser)
+      }
+    })
+  }
 }
-const addStatus = ref(true)
+
+const updateTeam = (tid) => {
+  showSuccessToast("更新队伍" + tid)
+}
+
+const quitTeam = (tid) => {
+  showSuccessToast("退出队伍" + tid)
+}
+
+const isUserInTeam = (team) => {
+  console.log(team.userSet);
+  console.log(loginUser.value);
+  // Array.prototype.some() 方法用于检测数组中是否至少有一个元素符合指定的条件，
+  // 如果有则返回 true，否则返回 false。
+  // 回调函数将会对数组中的每个元素执行，直到找到第一个满足条件的元素为止。
+  return team.userSet.some(user => user.id === loginUser.value.id);
+}
 onMounted(async () => {
-  await getCurrent()
+  loginUser.value = await getCurrent()
   const {teamsId} = route.query
   if (teamsId) {
     const teamsById = await request.get("/team/teamsByIds", {
