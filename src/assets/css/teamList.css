@@ -25,3 +25,13 @@ img.usersImgUrl {
     margin-top: -3px;
     float: left
 }
+
+.add-button {
+    position: fixed;
+    bottom: 52px;
+    width: 50px;
+    right: 12px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 999;
+}

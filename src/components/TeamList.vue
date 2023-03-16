@@ -1,4 +1,5 @@
 <template>
+  <van-button class="add-button" type="primary" icon="plus" @click="toAddTeam"/>
   <div v-if="!teamSet||teamSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
@@ -14,8 +15,12 @@
           队长：{{ team.user.username }}
         </van-tag>
         <div style="padding-top: 3px">
-          队伍人数：{{ team.userSet.length }}/{{ team.maxNum }}
-          <!--          {{ 4 }} / {{ 5 }}-->
+          队伍人数：{{ team.userSet.length }} / {{ team.maxNum }} 人
+          <span>
+            &nbsp;--&nbsp; 剩余位置：{{
+              team.maxNum + 2 - team.userSet.length <= 0 ? "已满员" : team.maxNum + 2 - team.userSet.length + " 人"
+            }}
+        </span>
         </div>
         <div style="padding-top: 3px">
           {{ '创建时间：' + team.createTime }}
@@ -27,29 +32,44 @@
 
       </template>
       <template #footer>
-        <div style="margin-left: 7px">
+        <div
+            v-if="loginUser.id===team.user.id ||loginUser.userRole===1"
+            style="margin-left: 7px">
         <span v-for="user of team.userSet.slice(0, 5)">
           <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
         </span>
-          <span v-if="team.userSet.length>4" class="omit">
+          <span v-if="team.userSet.length>5" class="omit">
+               ...
+          </span>
+        </div>
+        <div v-if="loginUser.id!==team.user.id &&loginUser.userRole!==1" style="margin-left: 103px">
+        <span v-for="user of team.userSet.slice(0, 5)">
+          <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
+        </span>
+          <span v-if="team.userSet.length>5" class="omit">
                ...
           </span>
         </div>
         <span v-if="!isUserInTeam(team)">
         <van-button plain size="mini" type="primary" icon="plus" @click="joinTeam(team.id)">加入队伍
         </van-button>
-        <van-button plain size="mini" type="default" icon="eye-o" @click="showTeam(team.id)">查看队伍</van-button>
         </span>
         <span v-if="isUserInTeam(team)">
-        <van-button plain size="mini" type="danger" icon="close" @click="quitTeam(team.id)">退出队伍
-        </van-button>
-        <van-button plain size="mini" type="primary" icon="replay" @click="updateTeam(team.id)">更新队伍</van-button>
-             <van-button plain size="mini" type="default" icon="eye-o" @click="showTeam(team.id)">查看队伍</van-button>
+        <van-button v-if="loginUser.id===team.user.id||loginUser.userRole===1" plain size="mini" type="danger"
+                    icon="close" @click="disbandTeam(team.id)">解散队伍</van-button>
+         <van-button v-else plain size="mini" type="danger" icon="close"
+                     @click="quitTeam(team.id)">退出队伍</van-button>
         </span>
+        <van-button v-if="loginUser.id===team.user.id||loginUser.userRole===1" plain size="mini" type="primary"
+                    icon="replay"
+                    @click="updateTeam(team.id)">更新队伍
+        </van-button>
+        <van-button plain size="mini" type="default" icon="eye-o" @click="showTeam(team.id)">查看队伍</van-button>
       </template>
     </van-card>
     <div style="padding-top:4px "></div>
   </div>
+  <div style="padding-bottom: 32px;"/>
 </template>
 
 <script setup>
@@ -84,14 +104,21 @@ const joinTeam = async (tid) => {
     // 更新队伍信息
     teamSet.value.forEach(team => {
       if (team.id === tid) {
+        loginUser.value = joinTeamUser
         team.userSet.push(joinTeamUser)
       }
     })
   }
 }
-
+const toAddTeam = () => {
+showSuccessToast("创建队伍")
+}
 const updateTeam = (tid) => {
   showSuccessToast("更新队伍" + tid)
+}
+
+const disbandTeam = (tid) => {
+  showSuccessToast("解散队伍" + tid)
 }
 
 const quitTeam = (tid) => {
