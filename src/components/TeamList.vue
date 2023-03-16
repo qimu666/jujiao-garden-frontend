@@ -27,7 +27,7 @@
 
       </template>
       <template #footer>
-        <div style="margin-left: 103px">
+        <div style="margin-left: 7px">
         <span v-for="user of team.userSet.slice(0, 5)">
           <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
         </span>
@@ -44,8 +44,8 @@
         <van-button plain size="mini" type="danger" icon="close" @click="quitTeam(team.id)">退出队伍
         </van-button>
         <van-button plain size="mini" type="primary" icon="replay" @click="updateTeam(team.id)">更新队伍</van-button>
+             <van-button plain size="mini" type="default" icon="eye-o" @click="showTeam(team.id)">查看队伍</van-button>
         </span>
-
       </template>
     </van-card>
     <div style="padding-top:4px "></div>
@@ -99,8 +99,6 @@ const quitTeam = (tid) => {
 }
 
 const isUserInTeam = (team) => {
-  console.log(team.userSet);
-  console.log(loginUser.value);
   // Array.prototype.some() 方法用于检测数组中是否至少有一个元素符合指定的条件，
   // 如果有则返回 true，否则返回 false。
   // 回调函数将会对数组中的每个元素执行，直到找到第一个满足条件的元素为止。

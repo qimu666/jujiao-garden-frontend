@@ -85,7 +85,6 @@ onMounted(async () => {
     team.value = users
     user.value = users.user
     userSet.value = users.userSet
-    console.log(team.value)
   }
   jsonParseTag(users.userSet)
   loginUser.value = sessionStorage.getItem("longUser") ? JSON.parse(sessionStorage.getItem("longUser")) : undefined
