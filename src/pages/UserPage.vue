@@ -58,6 +58,9 @@
       <van-button type="primary" @click="loginOut" block>退出登录</van-button>
     </van-space>
   </div>
+  <div class="updateAvatarUrl" v-if="updateAvatarUrl">
+    <van-loading color="#0094ff" size="10" >头像更新中...</van-loading>
+  </div>
   <copyright/>
 </template>
 
@@ -72,12 +75,13 @@ import {UserType} from "../model/user";
 
 const router = useRouter()
 const user = ref<UserType>()
-
+const updateAvatarUrl = ref(false)
 
 const afterRead = async (file) => {
   showConfirmDialog({
     message: '请确认修改当前头像?',
   }).then(async () => {
+    updateAvatarUrl.value = true
     const fileFile = file.file
     const res = await request.post("/file/upload", {
       'file': fileFile,
@@ -85,9 +89,16 @@ const afterRead = async (file) => {
     }, {
       headers: {'Content-Type': 'multipart/form-data'},
     })
-    if (res) {
+
+    const updateUserAvatarUrl = await request.post("/user/update", {
+      id: user.value.id,
+      userAvatarUrl: res
+    })
+    if (updateUserAvatarUrl) {
+      console.log(updateUserAvatarUrl)
       user.value = await getCurrent()
       showSuccessToast("更新成功")
+      updateAvatarUrl.value = false
     }
   }).catch(() => {
     showSuccessToast("取消修改")
@@ -149,4 +160,9 @@ const loginOut = async () => {
 @import "../assets/css/userPage.css";
 @import "../assets/css/public.css";
 
+.updateAvatarUrl {
+  position: fixed;
+  top: 30%;
+  left: 37%;
+}
 </style>

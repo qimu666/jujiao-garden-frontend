@@ -5,6 +5,7 @@ const routes = [
     {path: '/', component: () => import("../pages/IndexPage.vue")},
     {path: '/team', component: () => import("../pages/TeamPage.vue")},
     {path: '/team/show', name: 'teamShow', component: () => import("../pages/TeamShow.vue")},
+    {path: '/team/create', name: 'teamCreate', component: () => import("../pages/TeamCreatePage.vue")},
     {path: '/user', component: () => import("../pages/UserPage.vue")},
     {path: '/user/more', component: () => import("../pages/UserPageMore.vue")},
     {path: '/user/more/password', component: () => import("../pages/PasswordEdit.vue")},

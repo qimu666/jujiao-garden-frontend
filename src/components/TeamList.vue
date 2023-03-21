@@ -76,7 +76,7 @@
 import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
 import {useRoute, useRouter} from "vue-router";
-import {showSuccessToast} from "vant";
+import {showConfirmDialog, showSuccessToast} from "vant";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import qs from "qs";
@@ -95,34 +95,66 @@ const showTeam = (id) => {
 }
 // 使用Vue的响应式数据机制更新队伍信息
 const joinTeam = async (tid) => {
-  const joinTeamUser = await request.post("/team/join", {
-    teamId: tid,
-    password: null
-  })
-  if (joinTeamUser) {
-    showSuccessToast("加入成功")
-    // 更新队伍信息
-    teamSet.value.forEach(team => {
-      if (team.id === tid) {
-        loginUser.value = joinTeamUser
-        team.userSet.push(joinTeamUser)
-      }
+  showConfirmDialog({
+    message: '请确认是否加入该队伍?',
+  }).then(async () => {
+    const joinTeamUser = await request.post("/team/join", {
+      teamId: tid,
+      password: null
     })
-  }
+    if (joinTeamUser) {
+      showSuccessToast("加入成功")
+      // 更新队伍信息
+      teamSet.value.forEach(team => {
+        if (team.id === tid) {
+          loginUser.value = joinTeamUser
+          team.userSet.push(joinTeamUser)
+        }
+      })
+    }
+  }).catch(() => {
+    showSuccessToast("取消成功")
+  })
 }
 const toAddTeam = () => {
-showSuccessToast("创建队伍")
+  router.push("/team/create")
+  showSuccessToast("创建队伍")
 }
 const updateTeam = (tid) => {
   showSuccessToast("更新队伍" + tid)
 }
 
 const disbandTeam = (tid) => {
-  showSuccessToast("解散队伍" + tid)
+  showConfirmDialog({
+    message: '请确认是否解散该队伍?',
+  }).then(async () => {
+    const dissolutionTeam = await request.post(`/team/${tid}`)
+    if (dissolutionTeam) {
+      showSuccessToast("解散成功")
+      // 过滤掉删除的队伍id
+      teamSet.value = teamSet.value.filter(team => team.id !== tid)
+    }
+  }).catch(() => {
+    showSuccessToast("取消成功")
+  });
 }
 
 const quitTeam = (tid) => {
-  showSuccessToast("退出队伍" + tid)
+  showConfirmDialog({
+    message: '请确认是否退出该队伍?',
+  }).then(async () => {
+    const quitTeam = await request.post(`/team/quit/${tid}`)
+    if (quitTeam) {
+      showSuccessToast("退出成功")
+      // 过滤掉退出的用户id
+      teamSet.value.filter(team => {
+        team.userSet = team.userSet.filter(user => user.id !== loginUser.value.id
+        )
+      });
+    }
+  }).catch(() => {
+    showSuccessToast("取消成功")
+  });
 }
 
 const isUserInTeam = (team) => {

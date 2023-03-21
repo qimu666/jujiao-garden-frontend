@@ -1,4 +1,12 @@
 <template>
+  <van-sticky>
+    <van-notice-bar v-if="team.announce"
+                    left-icon="volume-o"
+                    color="#1989fa" background="#ecf9ff"
+                    :text="'队伍公告：'+team.announce"
+    />
+  </van-sticky>
+
   <div class="center">
     <img class="img" :src="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture">
   </div>
@@ -29,11 +37,11 @@
     </template>
   </van-cell>
   <div style="margin-bottom: 10px"></div>
-
   <div v-if="!userSet||userSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
-  <van-divider  :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }" content-position="left">队员</van-divider>
+  <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }" content-position="left">队员
+  </van-divider>
   <div v-if="userSet.length >0 && userSet">
     <div v-for="user in userSet" id="card" class="card">
       <van-swipe-cell>
@@ -54,7 +62,7 @@
         </van-card>
         <template #right>
           <van-button class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
-          <van-button v-if="loginUser&&loginUser.userRole===1&&team.user.id===loginUser.id" square text="删除用户"
+          <van-button v-if="loginUser.userRole===1||team.user.id===loginUser.id" square text="踢出队伍"
                       class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
         </template>
       </van-swipe-cell>
@@ -70,6 +78,7 @@ import getCurrent from "../service/currentUser.js";
 import request from "../service/myAxios";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import {showConfirmDialog, showSuccessToast} from "vant";
+
 const loginUser = ref({})
 const router = useRouter()
 const team = ref({})
