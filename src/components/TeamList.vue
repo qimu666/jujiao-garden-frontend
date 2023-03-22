@@ -128,6 +128,7 @@ import {showConfirmDialog, showFailToast, showSuccessToast} from "vant";
 import request from "../service/myAxios";
 import qs from "qs";
 import {teamStatusEnum} from "../constants/team.ts";
+import getCurrent from "../service/currentUser";
 
 const showEncryptionTeam = ref(false);
 const route = useRoute()
@@ -251,6 +252,7 @@ const isUserInTeam = (team) => {
 }
 
 onMounted(async () => {
+  loginUser.value = await getCurrent()
   const {teamsId} = route.query
   if (teamsId) {
     const teamsById = await request.get("/team/teamsByIds", {
