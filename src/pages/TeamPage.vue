@@ -9,21 +9,6 @@
       <div style="color: #1989fa" @click="onClickButton">搜索</div>
     </template>
   </van-search>
-
-  <van-tabs v-model:active="active" @change="onTabChange">
-    <van-tab name="public" title="公开">
-      <template #title>
-        <van-icon name="smile-o" size="16px"/>
-        公开
-      </template>
-    </van-tab>
-    <van-tab name="secret" title="加密">
-      <template #title>
-        <van-icon name="lock" size="16px"/>
-        加密
-      </template>
-    </van-tab>
-  </van-tabs>
   <team-list/>
 </template>
 
@@ -38,12 +23,7 @@ const router = useRouter()
 const onSearch = (val: string) => showSuccessToast(val);
 const onClickButton = () => showSuccessToast(searchText.value + '搜索成功');
 
-const active = ref('public');
 const searchText = ref('');
-
-const onTabChange = (name: string) => {
-  showSuccessToast(name)
-}
 
 </script>
 

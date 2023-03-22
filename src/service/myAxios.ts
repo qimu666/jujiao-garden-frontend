@@ -6,8 +6,8 @@ const request = axios.create({
     // @ts-ignore
     baseURL: process.env.NODE_ENV === "development" ? 'http://localhost:8080/api' : 'https://qimuu.icu/api',
     // baseURL: 'http://localhost:8080/api/',
-    withCredentials: true
 });
+request.defaults.withCredentials = true
 
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
