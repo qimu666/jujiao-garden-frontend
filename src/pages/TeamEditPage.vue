@@ -51,7 +51,6 @@
           <van-stepper v-model="team.maxNum" theme="round" button-size="22" disable-input/>
         </template>
       </van-field>
-
       <van-field
           v-model="teamStatusEnum[team.teamStatus]"
           is-link
@@ -68,15 +67,27 @@
             @cancel="showTeamStatusPicker = false"
         />
       </van-popup>
-      <div v-if="team&&team.teamStatus===2">
+      <div v-if="!team.teamPassword&&team.teamStatus===2">
         <van-field
-            v-model="team.teamPassword"
-            type="password"
-            name="队伍密码"
-            label="队伍密码"
-            placeholder="请填写队伍密码"
-            :rules="[{ required: true, message: '请填写队伍密码' }]"
+            v-model="toPassword"
+            is-link
+            readonly
+            name="toEditPassword"
+            @click="updateEditPasswordStatus"
+            label="修改密码"
         />
+      </div>
+      <div v-if="toEditPassword">
+        <div v-if="team&&team.teamStatus===2">
+          <van-field
+              v-model="team.teamPassword"
+              type="password"
+              name="队伍密码"
+              label="队伍密码"
+              placeholder="请修改队伍的新密码"
+              :rules="[{ required: true, message: '请填写队伍密码' }]"
+          />
+        </div>
       </div>
       <van-field
           v-model="team.announce"
@@ -103,21 +114,27 @@
     </van-cell-group>
     <div style="margin: 16px;">
       <van-button round block type="primary" native-type="submit">
-        创建队伍
+        修改队伍
       </van-button>
     </div>
   </van-form>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
 import {showConfirmDialog, showFailToast, showSuccessToast, showToast} from "vant";
 import {teamStatusEnum} from "../constants/team";
 import request from "../service/myAxios";
-import router from "../router";
+import {useRoute, useRouter} from "vue-router";
+
+const toPassword = ref("点击修改队伍密码")
+const toEditPassword = ref(false)
+const route = useRoute()
+const router = useRouter()
 
 const team = ref({
+  id: null,
   teamName: '',
   teamAvatarUrl: "",
   teamPassword: '',
@@ -127,13 +144,31 @@ const team = ref({
   teamStatus: 0,
   announce: ''
 })
+
+const updateEditPasswordStatus = () => {
+  toEditPassword.value = !toEditPassword.value
+}
 const showPicker = ref(false);
 
+onMounted(async () => {
+  const teamId = JSON.parse(route.query.teamId)
+  const teamById = await request.get(`/team/${teamId}`)
+  console.log(teamById)
+  team.value = teamById
+})
+
+const formatDate = (datetime) => {
+  const date = new Date(datetime.replace(/[年月日]/g, "/"));
+  // 返回格式化后的日期
+  return date
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/, "");
+}
 
 const showTeamStatusPicker = ref(false);
 const teamStatusColumns = [
   {text: '公开', value: 0},
-  // {text: '私有', value: 1},
   {text: '加密', value: 2},
 ];
 
@@ -154,17 +189,20 @@ const onCancel = () => {
   showToast('cancel');
 };
 
+
 const onSubmit = () => {
   showConfirmDialog({
-    message: '请确认是否创建该队伍?',
+    message: '请确认是否修改该队伍?',
   }).then(async () => {
-    const create = await request.post("/team/createTeam", team.value)
-    if (create) {
-      showSuccessToast("创建成功")
+    team.value.expireTime = formatDate(team.value.expireTime)
+    console.log(team.value)
+    const update = await request.post("/team/update", team.value)
+    if (update) {
+      showSuccessToast("修改成功")
       await router.replace("/team")
     }
   }).catch(() => {
-    showSuccessToast("取消创建")
+    showSuccessToast("取消修改")
   });
 };
 
@@ -185,9 +223,6 @@ const onOversize = () => {
   showFailToast("头像上传大小不能超过500kb")
 }
 
-const value = ref([
-  {url: 'https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg'}],
-);
 </script>
 
 <style scoped>

@@ -2,6 +2,7 @@ import axios from "axios";
 import {showFailToast} from "vant";
 import router from "../router";
 
+
 const request = axios.create({
     // @ts-ignore
     baseURL: process.env.NODE_ENV === "development" ? 'http://localhost:8080/api' : 'https://qimuu.icu/api',
@@ -26,7 +27,11 @@ request.interceptors.response.use(function (response) {
         toLogin()
     } else if (data.code === 40101) {
         showFailToast(data.description)
-        router.back()
+        if (router.currentRoute.value.path === "/team/show") {
+
+        } else {
+            router.back()
+        }
     } else {
         showFailToast(data.description)
     }

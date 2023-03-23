@@ -162,15 +162,15 @@ const queryTeam = async () => {
   const teams = await request.post("/team/search", {
     searchText: searchText.value
   })
-  teams.teamSet.forEach(team=>{
-    if (team.teamStatus===0){
-      active.value="0"
-    }
-    if (team.teamStatus===2){
-      active.value="2"
-    }
-  })
-  teamSet.value = teams.teamSet
+  if (active.value === "3") {
+    teamSet.value = teams.teamSet
+  }
+  if (active.value === "2") {
+    teamSet.value = teams.teamSet.filter(team => team.teamStatus === 2)
+  }
+  if (active.value === "1") {
+    teamSet.value = teams.teamSet.filter(team => team.teamStatus === 0)
+  }
 }
 
 const showTeam = (id) => {
@@ -216,7 +216,12 @@ const toAddTeam = () => {
   router.push("/team/create")
 }
 const updateTeam = (tid) => {
-  showSuccessToast("更新队伍" + tid)
+  router.push({
+    path: "/team/edit",
+    query:{
+      teamId: tid
+    }
+  })
 }
 
 const disbandTeam = (tid) => {
