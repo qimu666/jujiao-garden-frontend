@@ -124,7 +124,7 @@
 import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
 import {useRoute, useRouter} from "vue-router";
-import {showConfirmDialog, showFailToast, showSuccessToast} from "vant";
+import {showConfirmDialog, showSuccessToast} from "vant";
 import request from "../service/myAxios";
 import qs from "qs";
 import {teamStatusEnum} from "../constants/team.ts";
@@ -158,11 +158,19 @@ const onClickButton = async () => {
 };
 const queryTeam = async () => {
   // 去除空格
-  searchText.value=searchText.value.trim()
- const teams=  await request.post("/team/search", {
+  searchText.value = searchText.value.trim()
+  const teams = await request.post("/team/search", {
     searchText: searchText.value
   })
-  teamSet.value=teams.teamSet
+  teams.teamSet.forEach(team=>{
+    if (team.teamStatus===0){
+      active.value="0"
+    }
+    if (team.teamStatus===2){
+      active.value="2"
+    }
+  })
+  teamSet.value = teams.teamSet
 }
 
 const showTeam = (id) => {
