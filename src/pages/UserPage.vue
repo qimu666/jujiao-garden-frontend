@@ -77,7 +77,7 @@ const router = useRouter()
 const user = ref<UserType>()
 const updateAvatarUrl = ref(false)
 
-const afterRead = async (file) => {
+const afterRead = async (file:any) => {
   showConfirmDialog({
     message: '请确认修改当前头像?',
   }).then(async () => {

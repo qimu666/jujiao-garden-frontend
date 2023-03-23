@@ -78,18 +78,20 @@ import getCurrent from "../service/currentUser.js";
 import request from "../service/myAxios";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import {showConfirmDialog, showSuccessToast} from "vant";
+import {TeamListType, TeamType} from "../model/team";
+import {UserType} from "../model/user";
 
 const loginUser = ref({})
 const router = useRouter()
-const team = ref({})
-const user = ref({})
-const userSet = ref([])
+const team = ref<TeamListType[]>({})
+const user = ref<UserType>({})
+const userSet = ref<UserType[]>([])
 const route = useRoute()
 const teamId = JSON.parse(route.query.teamId)
 
 onMounted(async () => {
   await getCurrent()
-  const users = await request.get(`/team/${teamId}`)
+  const users:any[] = await request.get(`/team/${teamId}`)
   if (users) {
     team.value = users
     user.value = users.user
@@ -103,7 +105,7 @@ const addUser = () => {
   showSuccessToast('添加');
 }
 
-const deleteUser = (userId) => {
+const deleteUser = (userId:number) => {
   showConfirmDialog({
     title: "删除用户",
     message:
@@ -120,7 +122,7 @@ const deleteUser = (userId) => {
 }
 
 
-const showUser = (id) => {
+const showUser = (id:number) => {
   router.push({
     name: 'userShow',
     params: {

@@ -133,7 +133,7 @@ const toEditPassword = ref(false)
 const route = useRoute()
 const router = useRouter()
 
-const team = ref({
+const team = ref<any>({
   id: null,
   teamName: '',
   teamAvatarUrl: "",
@@ -157,7 +157,7 @@ onMounted(async () => {
   team.value = teamById
 })
 
-const formatDate = (datetime) => {
+const formatDate = (datetime:string) => {
   const date = new Date(datetime.replace(/[年月日]/g, "/"));
   // 返回格式化后的日期
   return date
@@ -172,7 +172,7 @@ const teamStatusColumns = [
   {text: '加密', value: 2},
 ];
 
-const teamStatusOnConfirm = ({selectedOptions}) => {
+const teamStatusOnConfirm = ({selectedOptions}:any) => {
   team.value.teamStatus = selectedOptions[0]?.value;
   showTeamStatusPicker.value = false;
 };
@@ -210,7 +210,7 @@ const minDate = new Date()
 
 const maxDate = new Date(2099, 5, 1)
 
-const afterRead = async (file) => {
+const afterRead = async (file:any) => {
   team.value.teamAvatarUrl = await request.post("/file/upload", {
     'file': file.file,
     'biz': "team_avatar"

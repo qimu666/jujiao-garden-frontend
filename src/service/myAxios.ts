@@ -27,11 +27,7 @@ request.interceptors.response.use(function (response) {
         toLogin()
     } else if (data.code === 40101) {
         showFailToast(data.description)
-        if (router.currentRoute.value.path === "/team/show") {
-
-        } else {
-            router.back()
-        }
+        router.back()
     } else {
         showFailToast(data.description)
     }

@@ -116,8 +116,9 @@ import {showConfirmDialog, showFailToast, showSuccessToast, showToast} from "van
 import {teamStatusEnum} from "../constants/team";
 import request from "../service/myAxios";
 import router from "../router";
+import {TeamType} from "../model/team";
 
-const team = ref({
+const team = ref<TeamType>({
   teamName: '',
   teamAvatarUrl: "",
   teamPassword: '',
@@ -137,15 +138,15 @@ const teamStatusColumns = [
   {text: '加密', value: 2},
 ];
 
-const teamStatusOnConfirm = ({selectedOptions}) => {
+const teamStatusOnConfirm = ({selectedOptions}: any) => {
   team.value.teamStatus = selectedOptions[0]?.value;
   showTeamStatusPicker.value = false;
 };
 
 const date = new Date()
 // 默认队伍过期时间为一天
-const currentDate = ref([date.getFullYear().toString(), date.getMonth().toString(), (date.getDate() + 1).toString()]);
-const currentTime = ref([date.getHours().toString(), date.getMinutes().toString()]);
+const currentDate = ref<string[]>([date.getFullYear().toString(), date.getMonth().toString(), (date.getDate() + 1).toString()]);
+const currentTime = ref<string[]>([date.getHours().toString(), date.getMinutes().toString()]);
 const onConfirm = () => {
   team.value.expireTime = currentDate.value.join('-') + ' ' + currentTime.value.join(':') + ":" + date.getSeconds()
   showPicker.value = false
@@ -172,7 +173,7 @@ const minDate = new Date()
 
 const maxDate = new Date(2099, 5, 1)
 
-const afterRead = async (file) => {
+const afterRead = async (file: any) => {
   team.value.teamAvatarUrl = await request.post("/file/upload", {
     'file': file.file,
     'biz': "team_avatar"

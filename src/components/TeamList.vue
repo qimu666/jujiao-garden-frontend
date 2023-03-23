@@ -120,22 +120,24 @@
   <div style="padding-bottom: 32px;"/>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {defaultPicture} from "../common/userCommon";
 import {useRoute, useRouter} from "vue-router";
 import {showConfirmDialog, showSuccessToast} from "vant";
 import request from "../service/myAxios";
+import {defaultPicture} from "../common/userCommon";
 import qs from "qs";
 import {teamStatusEnum} from "../constants/team.ts";
 import getCurrent from "../service/currentUser";
+import {TeamListType, TeamType} from "../model/team.js";
+import {UserType} from "../model/user";
 
 const showEncryptionTeam = ref(false);
 const route = useRoute()
 const router = useRouter()
 const loginUser = ref({})
-const teamSet = ref([])
-const teamList = ref([])
+const teamSet = ref<TeamListType[]>([])
+const teamList = ref<TeamListType[]>([])
 const teamId = ref([])
 const toSend = ref(false)
 const active = ref("1");
@@ -159,14 +161,14 @@ const onClickButton = async () => {
 const queryTeam = async () => {
   // 去除空格
   searchText.value = searchText.value.trim()
-  const teams = await request.post("/team/search", {
+  const teams : TeamListType[] = await request.post("/team/search", {
     searchText: searchText.value
   })
   if (active.value === "3") {
     teamSet.value = teams.teamSet
   }
   if (active.value === "2") {
-    teamSet.value = teams.teamSet.filter(team => team.teamStatus === 2)
+    teamSet.value = teams.teamSet.filter(team =>team.teamStatus === 2)
   }
   if (active.value === "1") {
     teamSet.value = teams.teamSet.filter(team => team.teamStatus === 0)
@@ -181,7 +183,7 @@ const showTeam = (id) => {
   })
 }
 // 使用Vue的响应式数据机制更新队伍信息
-const joinTeam = async (id, teamStatus) => {
+const joinTeam = async (id:number, teamStatus:number) => {
   if (teamStatus === 2) {
     showEncryptionTeam.value = true
     encryptionTeamId.value = id
@@ -195,15 +197,15 @@ const joinTeam = async (id, teamStatus) => {
     })
   }
 }
-const joinTeamPost = async (teamId) => {
-  const joinTeamUser = await request.post("/team/join", {
+const joinTeamPost = async (teamId:number) => {
+  const joinTeamUser:UserType = await request.post("/team/join", {
     teamId: teamId,
     password: encryptionTeamPassword.value
   })
   if (joinTeamUser) {
     showSuccessToast("加入成功")
     // 更新队伍信息
-    teamSet.value.forEach(team => {
+    teamSet.value.forEach((team:TeamListType) => {
       if (team.id === teamId) {
         loginUser.value = joinTeamUser
         team.userSet.push(joinTeamUser)
@@ -215,7 +217,7 @@ const joinTeamPost = async (teamId) => {
 const toAddTeam = () => {
   router.push("/team/create")
 }
-const updateTeam = (tid) => {
+const updateTeam = (tid:number) => {
   router.push({
     path: "/team/edit",
     query:{
@@ -224,7 +226,7 @@ const updateTeam = (tid) => {
   })
 }
 
-const disbandTeam = (tid) => {
+const disbandTeam = (tid:number) => {
   showConfirmDialog({
     message: '请确认是否解散该队伍?',
   }).then(async () => {
@@ -239,7 +241,7 @@ const disbandTeam = (tid) => {
   });
 }
 
-const quitTeam = (tid) => {
+const quitTeam = (tid:number) => {
   showConfirmDialog({
     message: '请确认是否退出该队伍?',
   }).then(async () => {
@@ -247,7 +249,7 @@ const quitTeam = (tid) => {
     if (quitTeam) {
       showSuccessToast("退出成功")
       // 过滤掉退出的用户id
-      teamSet.value.filter(team => {
+      teamSet.value.filter(team =>{
         team.userSet = team.userSet.filter(user => user.id !== loginUser.value.id
         )
       });
@@ -257,18 +259,18 @@ const quitTeam = (tid) => {
   });
 }
 
-const isUserInTeam = (team) => {
+const isUserInTeam = (team:TeamListType) => {
   // Array.prototype.some() 方法用于检测数组中是否至少有一个元素符合指定的条件，
   // 如果有则返回 true，否则返回 false。
   // 回调函数将会对数组中的每个元素执行，直到找到第一个满足条件的元素为止。
-  return team.userSet.some(user => user.id === loginUser.value.id);
+  return team.userSet.some((user:UserType) => user.id === loginUser.value.id);
 }
 
 onMounted(async () => {
   loginUser.value = await getCurrent()
   const {teamsId} = route.query
   if (teamsId) {
-    const teamsById = await request.get("/team/teamsByIds", {
+    const teamsById:TeamListType = await request.get("/team/teamsByIds", {
       params: {
         teamId: teamsId,
       }, paramsSerializer: {
@@ -285,13 +287,13 @@ onMounted(async () => {
   // 默认公开
 })
 
-const publicTeam = (teams) => {
+const publicTeam = (teams:TeamListType) => {
   teamSet.value = teams.teamSet
   teamList.value = teams.teamSet
   onTabChange('1')
 }
 
-const onTabChange = (name) => {
+const onTabChange = (name:string) => {
   teamSet.value = teamList.value
   if (name === "1") {
     teamSet.value = teamSet.value.filter(team => team.teamStatus === 0)
@@ -300,8 +302,8 @@ const onTabChange = (name) => {
     teamSet.value = teamSet.value.filter(team => team.teamStatus === 2)
   }
   if (name === "3") {
-    teamSet.value = teamSet.value.filter(team => {
-      const currentUserInTeam = team.userSet.some(user => user.id === loginUser.value.id);
+    teamSet.value = teamSet.value.filter((team:TeamType) => {
+      const currentUserInTeam = team.userSet.some((user:UserType) => user.id === loginUser.value.id);
       const isCreatedByCurrentUser = team.user.id === loginUser.value.id;
       return currentUserInTeam || isCreatedByCurrentUser
     });

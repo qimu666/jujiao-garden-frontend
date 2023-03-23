@@ -80,7 +80,7 @@ if (field.value === "gender") {
   editValue.value = genderMap[editValue.value]
 }
 
-const onConfirm = ({selectedOptions}) => {
+const onConfirm = ({selectedOptions}:any) => {
   showPicker.value = false;
   editValue.value = selectedOptions[0].text;
 };

@@ -38,12 +38,13 @@ import {useRoute, useRouter} from "vue-router";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import request from "../service/myAxios";
 import qs from 'qs'
+import {UserType} from "../model/user";
 
 
 const route = useRoute()
 const router = useRouter()
 const show_pop = ref("true")
-const users = ref([])
+const users = ref<UserType[]>([])
 
 const loginUser = ref({})
 
@@ -53,7 +54,7 @@ const addUser = () => {
   showSuccessToast('添加');
 }
 
-const deleteUser = (userId) => {
+const deleteUser = (userId:number) => {
   showConfirmDialog({
     title: "删除用户",
     message:
@@ -69,7 +70,7 @@ const deleteUser = (userId) => {
       })
 }
 
-const showUser = (id) => {
+const showUser = (id:number) => {
   router.push({
     name: 'userShow',
     params: {
@@ -89,7 +90,7 @@ const showUser = (id) => {
 
 onMounted(async () => {
   if (tags) {
-    const searchTagsList = await request.get(`/user/search/tags`, {
+    const searchTagsList:UserType[] = await request.get(`/user/search/tags`, {
           params: {
             tagNameList: tags
           },
@@ -104,7 +105,7 @@ onMounted(async () => {
     users.value = searchTagsList
     jsonParseTag(searchTagsList)
   } else {
-    const userList = await request.get("/user/search")
+    const userList:UserType[] = await request.get("/user/search")
     if (userList) {
       users.value = userList
       jsonParseTag(userList)

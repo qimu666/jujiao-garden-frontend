@@ -79,9 +79,10 @@ import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import getCurrent from "../service/currentUser";
 import {genderMap, roleMap} from "../model/userMap";
+import {UserType} from "../model/user";
 
 const router = useRouter()
-const user = ref({})
+const user = ref<UserType>({})
 
 const update = (val: string, name: string, field: string) => {
   router.push({
