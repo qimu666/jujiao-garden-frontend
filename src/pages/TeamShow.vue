@@ -61,9 +61,15 @@
           </template>
         </van-card>
         <template #right>
-          <van-button class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
-          <van-button v-if="loginUser.userRole===1||team.user.id===loginUser.id" square text="踢出队伍"
-                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
+          <van-button v-if="user.id!==loginUser.id" class="delete-button child" square text="添加好友" type="primary"
+                      @click="addUser"/>
+          <!--当前用户是管理员或者是队伍的创建者-->
+          <span v-if="loginUser.userRole===1||team.user.id ===loginUser.id">
+          <span v-if="user.userRole!==1&&user.id!==loginUser.id">
+              <van-button square text="踢出队伍"
+                          class="delete-button child" type="danger" @click="kickOut(user.username,user.id)"/>
+            </span>
+          </span>
         </template>
       </van-swipe-cell>
       <div style="padding-top: 5px"></div>
@@ -78,7 +84,7 @@ import getCurrent from "../service/currentUser.js";
 import request from "../service/myAxios";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import {showConfirmDialog, showSuccessToast} from "vant";
-import {TeamListType, TeamType} from "../model/team";
+import {TeamListType} from "../model/team";
 import {UserType} from "../model/user";
 
 const loginUser = ref({})
@@ -91,7 +97,7 @@ const teamId = JSON.parse(route.query.teamId)
 
 onMounted(async () => {
   await getCurrent()
-  const users:any[] = await request.get(`/team/${teamId}`)
+  const users: any[] = await request.get(`/team/${teamId}`)
   if (users) {
     team.value = users
     user.value = users.user
@@ -105,24 +111,25 @@ const addUser = () => {
   showSuccessToast('添加');
 }
 
-const deleteUser = (userId:number) => {
+const kickOut = (username: string, userId: number) => {
   showConfirmDialog({
-    title: "删除用户",
+    title: "踢出队伍",
     message:
-        '确认删除该用户？',
+        '是否踢出该队员：' + username + '！',
   })
       .then(async () => {
-        await request.post(`/user/delete?id=${userId}`).then(e => {
-          if (e) {
-            showSuccessToast("删除成功")
-            userSet.value = userSet.value.filter(user => user.id !== userId)
-          }
+        const kickOutUser = await request.post(`/team/kickOutUser`, {
+          teamId: teamId,
+          userId: userId
         })
+        if (kickOutUser) {
+          showSuccessToast("踢出成功")
+          userSet.value = userSet.value.filter(user => user.id !== userId)
+        }
       })
 }
 
-
-const showUser = (id:number) => {
+const showUser = (id: number) => {
   router.push({
     name: 'userShow',
     params: {

@@ -21,7 +21,7 @@
           </template>
         </van-card>
         <template #right>
-          <van-button class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
+          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
           <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"
                       class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
         </template>

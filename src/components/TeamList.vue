@@ -41,7 +41,7 @@
   <div v-for="team in teamSet">
     <van-card
         :desc="team.teamDesc"
-        :thumb="team.teamAvatarUrl"
+        :thumb="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture"
         :title="team.teamName"
     >
       <template #tags>
@@ -73,7 +73,8 @@
             v-if="loginUser.id===team.user.id ||loginUser.userRole===1"
             style="margin-left: 7px">
         <span v-for="user of team.userSet.slice(0, 5)">
-          <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
+          <img :alt="user.username" :src="user.userAvatarUrl.length ? user.userAvatarUrl:defaultPicture"
+               class="usersImgUrl">
         </span>
           <span v-if="team.userSet.length>5" class="omit">
                ...
@@ -161,14 +162,14 @@ const onClickButton = async () => {
 const queryTeam = async () => {
   // 去除空格
   searchText.value = searchText.value.trim()
-  const teams : TeamListType[] = await request.post("/team/search", {
+  const teams: TeamListType[] = await request.post("/team/search", {
     searchText: searchText.value
   })
   if (active.value === "3") {
     teamSet.value = teams.teamSet
   }
   if (active.value === "2") {
-    teamSet.value = teams.teamSet.filter(team =>team.teamStatus === 2)
+    teamSet.value = teams.teamSet.filter(team => team.teamStatus === 2)
   }
   if (active.value === "1") {
     teamSet.value = teams.teamSet.filter(team => team.teamStatus === 0)
@@ -183,7 +184,7 @@ const showTeam = (id) => {
   })
 }
 // 使用Vue的响应式数据机制更新队伍信息
-const joinTeam = async (id:number, teamStatus:number) => {
+const joinTeam = async (id: number, teamStatus: number) => {
   if (teamStatus === 2) {
     showEncryptionTeam.value = true
     encryptionTeamId.value = id
@@ -197,15 +198,15 @@ const joinTeam = async (id:number, teamStatus:number) => {
     })
   }
 }
-const joinTeamPost = async (teamId:number) => {
-  const joinTeamUser:UserType = await request.post("/team/join", {
+const joinTeamPost = async (teamId: number) => {
+  const joinTeamUser: UserType = await request.post("/team/join", {
     teamId: teamId,
     password: encryptionTeamPassword.value
   })
   if (joinTeamUser) {
     showSuccessToast("加入成功")
     // 更新队伍信息
-    teamSet.value.forEach((team:TeamListType) => {
+    teamSet.value.forEach((team: TeamListType) => {
       if (team.id === teamId) {
         loginUser.value = joinTeamUser
         team.userSet.push(joinTeamUser)
@@ -217,16 +218,16 @@ const joinTeamPost = async (teamId:number) => {
 const toAddTeam = () => {
   router.push("/team/create")
 }
-const updateTeam = (tid:number) => {
+const updateTeam = (tid: number) => {
   router.push({
     path: "/team/edit",
-    query:{
+    query: {
       teamId: tid
     }
   })
 }
 
-const disbandTeam = (tid:number) => {
+const disbandTeam = (tid: number) => {
   showConfirmDialog({
     message: '请确认是否解散该队伍?',
   }).then(async () => {
@@ -241,36 +242,42 @@ const disbandTeam = (tid:number) => {
   });
 }
 
-const quitTeam = (tid:number) => {
+const quitTeam = (tid: number) => {
   showConfirmDialog({
     message: '请确认是否退出该队伍?',
   }).then(async () => {
+    const oldTeam: any[] = await request.get(`/team/${tid}`)
     const quitTeam = await request.post(`/team/quit/${tid}`)
     if (quitTeam) {
       showSuccessToast("退出成功")
       // 过滤掉退出的用户id
-      teamSet.value.filter(team =>{
-        team.userSet = team.userSet.filter(user => user.id !== loginUser.value.id
-        )
+      teamSet.value.forEach(team => {
+        if (team.id === oldTeam.id) {
+          team.userSet = oldTeam.userSet.filter(user => user.id !== loginUser.value.id)
+        }
       });
+      // 当前是我的队伍时,页面过滤掉当前退出的队伍
+      if (active.value === "3") {
+        teamSet.value = teamSet.value.filter(team => team.id !== tid)
+      }
     }
   }).catch(() => {
     showSuccessToast("取消成功")
   });
 }
 
-const isUserInTeam = (team:TeamListType) => {
+const isUserInTeam = (team: TeamListType) => {
   // Array.prototype.some() 方法用于检测数组中是否至少有一个元素符合指定的条件，
   // 如果有则返回 true，否则返回 false。
   // 回调函数将会对数组中的每个元素执行，直到找到第一个满足条件的元素为止。
-  return team.userSet.some((user:UserType) => user.id === loginUser.value.id);
+  return team.userSet.some((user: UserType) => user.id === loginUser.value.id);
 }
 
 onMounted(async () => {
   loginUser.value = await getCurrent()
   const {teamsId} = route.query
   if (teamsId) {
-    const teamsById:TeamListType = await request.get("/team/teamsByIds", {
+    const teamsById: TeamListType = await request.get("/team/teamsByIds", {
       params: {
         teamId: teamsId,
       }, paramsSerializer: {
@@ -284,16 +291,15 @@ onMounted(async () => {
     const teams = await request.get("/team/teams")
     publicTeam(teams)
   }
-  // 默认公开
 })
 
-const publicTeam = (teams:TeamListType) => {
+const publicTeam = (teams: TeamListType) => {
   teamSet.value = teams.teamSet
   teamList.value = teams.teamSet
   onTabChange('1')
 }
 
-const onTabChange = (name:string) => {
+const onTabChange = (name: string) => {
   teamSet.value = teamList.value
   if (name === "1") {
     teamSet.value = teamSet.value.filter(team => team.teamStatus === 0)
@@ -302,12 +308,16 @@ const onTabChange = (name:string) => {
     teamSet.value = teamSet.value.filter(team => team.teamStatus === 2)
   }
   if (name === "3") {
-    teamSet.value = teamSet.value.filter((team:TeamType) => {
-      const currentUserInTeam = team.userSet.some((user:UserType) => user.id === loginUser.value.id);
+    teamSet.value = teamSet.value.filter((team: TeamType) => {
+      const currentUserInTeam = team.userSet.some((user: UserType) => user.id === loginUser.value.id);
       const isCreatedByCurrentUser = team.user.id === loginUser.value.id;
       return currentUserInTeam || isCreatedByCurrentUser
     });
   }
+  // 队伍中用户倒序排列
+  teamSet.value.forEach(team => {
+    team.userSet = [...team.userSet].sort().reverse();
+  })
 }
 </script>
 
