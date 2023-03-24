@@ -73,7 +73,7 @@
             v-if="loginUser.id===team.user.id ||loginUser.userRole===1"
             style="margin-left: 7px">
         <span v-for="user of team.userSet.slice(0, 5)">
-          <img :alt="user.username" :src="user.userAvatarUrl.length ? user.userAvatarUrl:defaultPicture"
+          <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture"
                class="usersImgUrl">
         </span>
           <span v-if="team.userSet.length>5" class="omit">
@@ -166,7 +166,7 @@ const queryTeam = async () => {
     searchText: searchText.value
   })
   if (active.value === "3") {
-    teamSet.value = teams.teamSet
+    teamSet.value = filterTeam(teams.teamSet)
   }
   if (active.value === "2") {
     teamSet.value = teams.teamSet.filter(team => team.teamStatus === 2)
@@ -308,16 +308,20 @@ const onTabChange = (name: string) => {
     teamSet.value = teamSet.value.filter(team => team.teamStatus === 2)
   }
   if (name === "3") {
-    teamSet.value = teamSet.value.filter((team: TeamType) => {
-      const currentUserInTeam = team.userSet.some((user: UserType) => user.id === loginUser.value.id);
-      const isCreatedByCurrentUser = team.user.id === loginUser.value.id;
-      return currentUserInTeam || isCreatedByCurrentUser
-    });
+    teamSet.value = filterTeam(teamSet.value)
   }
-  // 队伍中用户倒序排列
+  // // 队伍中用户倒序排列
   teamSet.value.forEach(team => {
     team.userSet = [...team.userSet].sort().reverse();
   })
+}
+
+const filterTeam = (teams: TeamListType[]) => {
+  return teams.filter((team: TeamType) => {
+    const currentUserInTeam = team.userSet.some((user: UserType) => user.id === loginUser.value.id);
+    const isCreatedByCurrentUser = team.user.id === loginUser.value.id;
+    return currentUserInTeam || isCreatedByCurrentUser
+  });
 }
 </script>
 
