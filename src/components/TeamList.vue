@@ -236,6 +236,7 @@ const disbandTeam = (tid: number) => {
       showSuccessToast("解散成功")
       // 过滤掉删除的队伍id
       teamSet.value = teamSet.value.filter(team => team.id !== tid)
+      teamList.value = teamList.value.filter(team => team.id !== tid)
     }
   }).catch(() => {
     showSuccessToast("取消成功")
@@ -252,6 +253,11 @@ const quitTeam = (tid: number) => {
       showSuccessToast("退出成功")
       // 过滤掉退出的用户id
       teamSet.value.forEach(team => {
+        if (team.id === oldTeam.id) {
+          team.userSet = oldTeam.userSet.filter(user => user.id !== loginUser.value.id)
+        }
+      });
+      teamList.value.forEach(team => {
         if (team.id === oldTeam.id) {
           team.userSet = oldTeam.userSet.filter(user => user.id !== loginUser.value.id)
         }
@@ -327,6 +333,7 @@ const filterTeam = (teams: TeamListType[]) => {
 
 <style scoped>
 @import "../assets/css/teamList.css";
+
 :deep(.van-search__field) {
   flex: 1;
   align-items: center;
