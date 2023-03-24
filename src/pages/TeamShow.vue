@@ -143,5 +143,4 @@ const showUser = (id: number) => {
 @import "../assets/css/public.css";
 @import "../assets/css/userPage.css";
 @import "../assets/css/userList.css";
-
 </style>
