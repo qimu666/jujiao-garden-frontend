@@ -35,7 +35,7 @@
             next-step-text="下一步"
             :tabs="['选择日期', '选择时间']"
             @confirm="onConfirm"
-            @cancel="onCancel"
+            @cancel="  showPicker = false;"
         >
           <van-date-picker
               v-model="currentDate"
@@ -107,12 +107,15 @@
       </van-button>
     </div>
   </van-form>
+  <div class="updateAvatarUrl" v-if="updateAvatarUrl">
+    <van-loading color="#0094ff" size="10">头像更新中...</van-loading>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
-import {showConfirmDialog, showFailToast, showSuccessToast, showToast} from "vant";
+import {showConfirmDialog, showFailToast, showNotify, showSuccessToast, showToast} from "vant";
 import {teamStatusEnum} from "../constants/team";
 import request from "../service/myAxios";
 import router from "../router";
@@ -128,8 +131,8 @@ const team = ref<TeamType>({
   teamStatus: 0,
   announce: ''
 })
+const updateAvatarUrl = ref(false)
 const showPicker = ref(false);
-
 
 const showTeamStatusPicker = ref(false);
 const teamStatusColumns = [
@@ -151,10 +154,18 @@ const onConfirm = () => {
   team.value.expireTime = currentDate.value.join('-') + ' ' + currentTime.value.join(':') + ":" + date.getSeconds()
   showPicker.value = false
 };
-const onCancel = () => {
-  showToast('cancel');
-};
 
+const show_TeamAvatarUrl_pop = ref("true")
+
+onMounted(() => {
+  const show_teamCreateAvatarUrl = sessionStorage.getItem("teamCreateAvatarUrl")
+  show_TeamAvatarUrl_pop.value = show_teamCreateAvatarUrl ? show_teamCreateAvatarUrl : show_TeamAvatarUrl_pop.value
+  if (show_TeamAvatarUrl_pop.value === "true") {
+    showNotify({message: '点击默认头像可更换队伍头像', type: "primary", duration: 2000});
+    show_TeamAvatarUrl_pop.value = "false"
+    sessionStorage.setItem('teamCreateAvatarUrl', show_TeamAvatarUrl_pop.value)
+  }
+})
 const onSubmit = () => {
   showConfirmDialog({
     message: '请确认是否创建该队伍?',
@@ -174,12 +185,20 @@ const minDate = new Date()
 const maxDate = new Date(2099, 5, 1)
 
 const afterRead = async (file: any) => {
-  team.value.teamAvatarUrl = await request.post("/file/upload", {
-    'file': file.file,
-    'biz': "team_avatar"
-  }, {
-    headers: {'Content-Type': 'multipart/form-data'},
-  })
+    updateAvatarUrl.value = true
+  if(updateAvatarUrl.value){
+    const teamAvatarUrl = await request.post("/file/upload", {
+      'file': file.file,
+      'biz': "team_avatar"
+    }, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+    team.value.teamAvatarUrl =teamAvatarUrl
+    if (teamAvatarUrl)
+    setTimeout(() => {
+      updateAvatarUrl.value = false
+    }, 1300);
+  }
 };
 
 const onOversize = () => {
@@ -194,4 +213,9 @@ const value = ref([
 <style scoped>
 @import "../../src/assets/css/public.css";
 
+.updateAvatarUrl {
+  position: fixed;
+  top: 30%;
+  left: 37%;
+}
 </style>

@@ -34,10 +34,11 @@
     </div>
   </van-tabs>
   <div style="padding-top: 4px"></div>
-  <van-button class="add-button" type="primary" icon="plus" @click="toAddTeam"/>
+  <van-button v-if="route.path==='/team'" class="add-button" type="primary" icon="plus" @click="toAddTeam"/>
   <div v-if="!teamSet||teamSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
+
   <div v-for="team in teamSet">
     <van-card
         :desc="team.teamDesc"
@@ -70,7 +71,7 @@
       </template>
       <template #footer>
         <div
-            v-if="loginUser.id===team.user.id ||loginUser.userRole===1"
+            v-if="loginUser?.id===team.user?.id ||loginUser.userRole===1"
             style="margin-left: 7px">
         <span v-for="user of team.userSet.slice(0, 5)">
           <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture"
@@ -80,7 +81,7 @@
                ...
           </span>
         </div>
-        <div v-if="loginUser.id!==team.user.id &&loginUser.userRole!==1" style="margin-left: 103px">
+        <div v-if="loginUser?.id!==team.user.id &&loginUser.userRole!==1" style="margin-left: 103px">
         <span v-for="user of team.userSet.slice(0, 5)">
           <img :alt="user.username" :src="user.userAvatarUrl ? user.userAvatarUrl:defaultPicture" class="usersImgUrl">
         </span>
@@ -93,8 +94,18 @@
         </van-button>
         </span>
         <span v-if="isUserInTeam(team)">
-        <van-button v-if="loginUser.id===team.user.id||loginUser.userRole===1" plain size="mini" type="danger"
-                    icon="close" @click="disbandTeam(team.id)">解散队伍</van-button>
+     <span v-if="loginUser.id===team.user.id||loginUser.userRole===1">
+      <van-popover placement="top" :show.sync="showPopover">
+         <van-button plain size="small" type="default" icon="exchange"
+                     @click="transferTeam(team.id)">转让队伍</van-button>
+        <div style="padding-bottom: 2px"></div>
+          <van-button plain size="small" type="danger" icon="fail" @click="disbandTeam(team.id)">解散队伍</van-button>
+         <template #reference>
+         <van-button type="primary" icon="ellipsis" @click="showPopover[team.id] = !showPopover[team.id]" plain size="mini">更多操作</van-button>
+     </template>
+       </van-popover>
+
+   </span>
          <van-button v-else plain size="mini" type="danger" icon="close"
                      @click="quitTeam(team.id)">退出队伍</van-button>
         </span>
@@ -107,16 +118,23 @@
     </van-card>
     <div style="padding-top:4px"></div>
   </div>
-
   <van-dialog v-model:show="showEncryptionTeam" title="请输入队伍口令" show-cancel-button @confirm="sendJoin">
     <div style="padding-top:8px "></div>
     <van-field v-model="encryptionTeamPassword"
                type="password"
                :rules="[{ required: true, message: '请输入队伍口令' }]"
-               style="text-align: center;width: 150px;margin-left:85px"
+               style="text-align: center;width: 150px;margin-left:125px"
     />
     <div style="padding-top:8px "></div>
-
+  </van-dialog>
+  <van-dialog v-model:show="transferUser" title="请输入要转让的用户账号" show-cancel-button @confirm="toTransferTeam">
+    <div style="padding-top:8px"></div>
+    <van-field v-model="transferUserAccount"
+               type="text"
+               :rules="[{ required: true, message: '请输入要转让的用户账号' }]"
+               style="text-align: center;width: 150px;margin-left:125px"
+    />
+    <div style="padding-top:8px "></div>
   </van-dialog>
   <div style="padding-bottom: 32px;"/>
 </template>
@@ -130,15 +148,16 @@ import {defaultPicture} from "../common/userCommon";
 import qs from "qs";
 import {teamStatusEnum} from "../constants/team.ts";
 import getCurrent from "../service/currentUser";
-import {TeamListType, TeamType} from "../model/team.js";
+import {TeamListType, TeamType} from "../model/team";
 import {UserType} from "../model/user";
 
 const showEncryptionTeam = ref(false);
+
 const route = useRoute()
 const router = useRouter()
 const loginUser = ref({})
-const teamSet = ref<TeamListType[]>([])
-const teamList = ref<TeamListType[]>([])
+const teamSet = ref([])
+const teamList = ref([])
 const teamId = ref([])
 const toSend = ref(false)
 const active = ref("1");
@@ -147,6 +166,25 @@ const encryptionTeamPassword = ref();
 const encryptionTeamId = ref()
 const sendJoin = async () => {
   await joinTeamPost(encryptionTeamId.value)
+  toSend.value = false
+}
+const showPopover = ref<{ [key: number]: boolean }>({});
+showPopover.value=false
+
+const transferUser = ref(false);
+const transferUserAccount = ref();
+const transferTeamId = ref();
+
+const toTransferTeam = async () => {
+  const transferTeam: UserType = await request.post("/team/transfer", {
+    teamId: transferTeamId.value,
+    userAccount: transferUserAccount.value
+  })
+  if (transferTeam) {
+    showSuccessToast("转让成功")
+    const teams = await request.get("/team/teams")
+    publicTeam(teams)
+  }
   toSend.value = false
 }
 
@@ -159,6 +197,7 @@ const onSearch = async () => {
 const onClickButton = async () => {
   await queryTeam()
 };
+
 const queryTeam = async () => {
   // 去除空格
   searchText.value = searchText.value.trim()
@@ -183,6 +222,12 @@ const showTeam = (id) => {
     query: {teamId: teamId.value},
   })
 }
+
+const transferTeam = (id: number) => {
+  transferUser.value = true
+  transferTeamId.value = id
+}
+
 // 使用Vue的响应式数据机制更新队伍信息
 const joinTeam = async (id: number, teamStatus: number) => {
   if (teamStatus === 2) {
@@ -276,11 +321,12 @@ const isUserInTeam = (team: TeamListType) => {
   // Array.prototype.some() 方法用于检测数组中是否至少有一个元素符合指定的条件，
   // 如果有则返回 true，否则返回 false。
   // 回调函数将会对数组中的每个元素执行，直到找到第一个满足条件的元素为止。
-  return team.userSet.some((user: UserType) => user.id === loginUser.value.id);
+  return team.userSet.some((user: UserType) => user.id === loginUser.value?.id);
 }
 
 onMounted(async () => {
-  loginUser.value = await getCurrent()
+  const user = await getCurrent()
+  loginUser.value = user
   const {teamsId} = route.query
   if (teamsId) {
     const teamsById: TeamListType = await request.get("/team/teamsByIds", {
@@ -294,8 +340,10 @@ onMounted(async () => {
     })
     publicTeam(teamsById)
   } else {
-    const teams = await request.get("/team/teams")
-    publicTeam(teams)
+    if (user) {
+      const teams = await request.get("/team/teams")
+      publicTeam(teams)
+    }
   }
 })
 
@@ -321,7 +369,6 @@ const onTabChange = (name: string) => {
     team.userSet = [...team.userSet].sort().reverse();
   })
 }
-
 const filterTeam = (teams: TeamListType[]) => {
   return teams.filter((team: TeamType) => {
     const currentUserInTeam = team.userSet.some((user: UserType) => user.id === loginUser.value.id);
@@ -341,4 +388,5 @@ const filterTeam = (teams: TeamListType[]) => {
   height: var(--van-search-input-height);
   background-color: transparent;
 }
+
 </style>

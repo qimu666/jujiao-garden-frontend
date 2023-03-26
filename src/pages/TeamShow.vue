@@ -11,14 +11,19 @@
     <img class="img" :src="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture">
   </div>
   <van-divider>霸气侧漏队</van-divider>
+  <van-cell :value="team.teamName" center icon="award-o">
+    <template #title>
+      <span class="custom-title">队伍名称</span>
+    </template>
+  </van-cell>
   <van-cell :value="team.id" center icon="points">
     <template #title>
       <span class="custom-title">队伍ID</span>
     </template>
   </van-cell>
-  <van-cell :value="team.teamName" center icon="award-o">
+  <van-cell :value="userSet.length +'/' + team.maxNum" center icon="friends-o">
     <template #title>
-      <span class="custom-title">队伍名称</span>
+      <span class="custom-title">队伍人数</span>
     </template>
   </van-cell>
   <van-cell :value="user.username" center icon="manager-o">
@@ -29,11 +34,6 @@
   <van-cell :value="team.teamDesc" center icon="label-o">
     <template #title>
       <span class="custom-title">队伍描述</span>
-    </template>
-  </van-cell>
-  <van-cell :value="userSet.length +'/' + team.maxNum" center icon="friends-o">
-    <template #title>
-      <span class="custom-title">队伍人数</span>
     </template>
   </van-cell>
   <div style="margin-bottom: 10px"></div>

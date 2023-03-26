@@ -1,4 +1,14 @@
 <template>
+  <van-search
+      v-model="searchText"
+      placeholder="请输入搜索关键词"
+      show-action
+      @search="onSearch"
+  >
+    <template #action>
+      <div style="color: #1989fa" @click="onClickButton">搜索</div>
+    </template>
+  </van-search>
   <div v-if="!users||users.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
@@ -33,22 +43,43 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {showConfirmDialog, showNotify, showSuccessToast} from "vant";
+import {showConfirmDialog, showFailToast, showNotify, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import request from "../service/myAxios";
 import qs from 'qs'
 import {UserType} from "../model/user";
-
-
+import {TeamListType} from "../model/team";
 const route = useRoute()
 const router = useRouter()
 const show_pop = ref("true")
 const users = ref<UserType[]>([])
+const searchText = ref('');
 
 const loginUser = ref({})
 
 const {tags} = route.query
+
+const onSearch = async () => {
+  await queryUser()
+};
+
+const onClickButton = async () => {
+  await queryUser()
+};
+
+const queryUser = async () => {
+  // 去除空格
+  searchText.value = searchText.value.trim()
+  const userList: UserType[] = await request.post("/user/search", {
+    searchText: searchText.value
+  })
+  if (userList.length<=0){
+    showFailToast("无搜索用户")
+  }
+  users.value = userList
+  jsonParseTag(userList)
+}
 
 const addUser = () => {
   showSuccessToast('添加');

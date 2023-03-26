@@ -59,7 +59,7 @@
     </van-space>
   </div>
   <div class="updateAvatarUrl" v-if="updateAvatarUrl">
-    <van-loading color="#0094ff" size="10" >头像更新中...</van-loading>
+    <van-loading color="#0094ff" size="10">头像更新中...</van-loading>
   </div>
   <copyright/>
 </template>
@@ -67,7 +67,7 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import {showConfirmDialog, showFailToast, showNotify, showSuccessToast} from "vant";
+import {showFailToast, showNotify, showSuccessToast} from "vant";
 import {defaultPicture} from "../common/userCommon";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
@@ -77,11 +77,9 @@ const router = useRouter()
 const user = ref<UserType>()
 const updateAvatarUrl = ref(false)
 
-const afterRead = async (file:any) => {
-  showConfirmDialog({
-    message: '请确认修改当前头像?',
-  }).then(async () => {
-    updateAvatarUrl.value = true
+const afterRead = async (file: any) => {
+  updateAvatarUrl.value = true
+  if (updateAvatarUrl.value) {
     const fileFile = file.file
     const res = await request.post("/file/upload", {
       'file': fileFile,
@@ -89,21 +87,19 @@ const afterRead = async (file:any) => {
     }, {
       headers: {'Content-Type': 'multipart/form-data'},
     })
-
     const updateUserAvatarUrl = await request.post("/user/update", {
       id: user.value.id,
       userAvatarUrl: res
     })
     if (updateUserAvatarUrl) {
-      console.log(updateUserAvatarUrl)
       user.value = await getCurrent()
       showSuccessToast("更新成功")
-      updateAvatarUrl.value = false
+      setTimeout(() => {
+        updateAvatarUrl.value = false
+      }, 1000);
     }
-  }).catch(() => {
-    showSuccessToast("取消修改")
-  });
-};
+  }
+}
 const onOversize = () => {
   showFailToast("头像上传大小不能超过500kb")
 }
@@ -129,16 +125,19 @@ const tagUpdate = (tags: string, id: number, field: string) => {
     }
   })
 }
-const show_pop = ref("true")
+const show_UserAvatarUrl_pop = ref("true")
 
 onMounted(async () => {
-  user.value = await getCurrent()
-  const show_updateUserAvatarUrl = sessionStorage.getItem("userAvatarUrl")
-  show_pop.value = show_updateUserAvatarUrl ? show_updateUserAvatarUrl : show_pop.value
-  if (!user.value.userAvatarUrl && show_pop.value === "true") {
-    showNotify({message: '点击头像可更换默认头像', type: "primary", duration: 1000});
-    show_pop.value = "false"
-    sessionStorage.setItem('userAvatarUrl', show_pop.value)
+  const loginUser = await getCurrent();
+  user.value = loginUser
+  if (loginUser) {
+    const show_updateUserAvatarUrl = sessionStorage.getItem("userAvatarUrl")
+    show_UserAvatarUrl_pop.value = show_updateUserAvatarUrl ? show_updateUserAvatarUrl : show_UserAvatarUrl_pop.value
+    if (show_UserAvatarUrl_pop.value === "true") {
+      showNotify({message: '点击头像可更换默认头像', type: "primary", duration: 2000});
+      show_UserAvatarUrl_pop.value = "false"
+      sessionStorage.setItem('userAvatarUrl', show_UserAvatarUrl_pop.value)
+    }
   }
 })
 const toMore = () => {

@@ -118,12 +118,15 @@
       </van-button>
     </div>
   </van-form>
+  <div class="updateAvatarUrl" v-if="updateAvatarUrl">
+    <van-loading color="#0094ff" size="10">头像更新中...</van-loading>
+  </div>
 </template>
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {defaultPicture} from "../common/userCommon";
-import {showConfirmDialog, showFailToast, showSuccessToast, showToast} from "vant";
+import {showConfirmDialog, showFailToast, showNotify, showSuccessToast, showToast} from "vant";
 import {teamStatusEnum} from "../constants/team";
 import request from "../service/myAxios";
 import {useRoute, useRouter} from "vue-router";
@@ -150,11 +153,18 @@ const updateEditPasswordStatus = () => {
 }
 const showPicker = ref(false);
 
+const show_teamAvatarUrl_pop = ref("true")
+
 onMounted(async () => {
+  const show_updateUserAvatarUrl = sessionStorage.getItem("teamAvatarUrl")
+  show_teamAvatarUrl_pop.value = show_updateUserAvatarUrl ? show_updateUserAvatarUrl : show_teamAvatarUrl_pop.value
+  if (show_teamAvatarUrl_pop.value === "true") {
+    showNotify({message: '点击队伍头像可更换默认头像', type: "primary", duration: 2000});
+    show_teamAvatarUrl_pop.value = "false"
+    sessionStorage.setItem('teamAvatarUrl', show_teamAvatarUrl_pop.value)
+  }
   const teamId = JSON.parse(route.query.teamId)
-  const teamById = await request.get(`/team/${teamId}`)
-  console.log(teamById)
-  team.value = teamById
+  team.value = await request.get(`/team/${teamId}`)
 })
 
 const formatDate = (datetime:string) => {
@@ -195,7 +205,6 @@ const onSubmit = () => {
     message: '请确认是否修改该队伍?',
   }).then(async () => {
     team.value.expireTime = formatDate(team.value.expireTime)
-    console.log(team.value)
     const update = await request.post("/team/update", team.value)
     if (update) {
       showSuccessToast("修改成功")
@@ -209,14 +218,20 @@ const onSubmit = () => {
 const minDate = new Date()
 
 const maxDate = new Date(2099, 5, 1)
+const updateAvatarUrl = ref(false)
 
-const afterRead = async (file:any) => {
-  team.value.teamAvatarUrl = await request.post("/file/upload", {
-    'file': file.file,
-    'biz': "team_avatar"
-  }, {
-    headers: {'Content-Type': 'multipart/form-data'},
-  })
+const afterRead = async (file: any) => {
+  updateAvatarUrl.value = true
+  if (updateAvatarUrl.value) {
+    team.value.teamAvatarUrl = await request.post("/file/upload", {
+      'file': file.file,
+      'biz': "team_avatar"
+    }, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+    setTimeout(() => {
+      updateAvatarUrl.value = false
+    }, 1000);  }
 };
 
 const onOversize = () => {
@@ -227,5 +242,9 @@ const onOversize = () => {
 
 <style scoped>
 @import "../../src/assets/css/public.css";
-
+.updateAvatarUrl {
+  position: fixed;
+  top: 30%;
+  left: 37%;
+}
 </style>

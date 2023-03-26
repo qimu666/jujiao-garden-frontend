@@ -1,7 +1,7 @@
 <template>
   <van-nav-bar left-arrow left-text="返回" title="聚交园" @click-right="onRight" @click-left="onLift">
     <template #right>
-      <van-icon name="search" size="22"/>
+      <van-icon name="search" size="22"/><span style="color: rgb(25,137,250)">标签</span>
     </template>
   </van-nav-bar>
     <div id="center">
