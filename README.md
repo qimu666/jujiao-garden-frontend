@@ -1,6 +1,6 @@
 # 聚交园
 
-## 大家找到志同道合的朋友的移动端网站（APP风格） 前端
+## 大家找到志同道合的朋友的移动端网站（APP风格） 后端
 
 [TOC]
 
@@ -8,13 +8,14 @@
 
 **前端地址： https://github.com/qimu666/jujiao-garden-frontend**
 
- **后端地址： https://github.com/qimu666/jujiao-yuan-backend**
+**后端地址： https://github.com/qimu666/jujiao-yuan-backend**
 
 🙏🏻 **大家喜欢这个项目的话，感谢动手点点 star**
 
 ## 项目描述
 
-- 一个帮助大家找到志同道合的伙伴的网站，网站包含移动端、pc端，包括用户登录注册、更新个人信息、按标签搜索用户、组队等功能。
+- 一个帮助大家找到志同道合的伙伴的移动端网站，主要有用户登录注册、更新个人信息、按标签搜索用户、组队等功能。
+
 
 ## 技术选型
 
@@ -26,9 +27,11 @@
 
 3. Vite 脚手架
 
-4. Axios 请求库
+4. TypeScript
 
- ### 后端
+5. Axios 请求库
+
+### 后端
 
 1. Java SpringBoot 2.7.x 框架
 2. MySQL 数据库
@@ -50,6 +53,35 @@
 7. 使用 Knife4j + Swagger 自动生成后端接口文档，并通过编写 ApiOperation 等注解补充接口注释，避免了人工编写维护文档的麻烦。
 8. 前端使用 Vant UI 组件库，并封装了全局通用的 Layout 组件，使主页、搜索页、组队页布局一致、并减少重复代码。
 9. 基于 Vue Router 全局路由守卫实现了根据不同页面来动态切换导航栏标题， 并通过在全局路由配置文件扩展 title 字段来减少无意义的 if else 代码。
+
+## 快速启动
+
+### 后端
+
+1. 运行 sql 目录下的 create_table.sql 建表
+2. 修改 application.yml 中的数据库地址为自己的
+3. 安装完 Maven 依赖后，直接运行即可
+
+
+### 前端
+
+安装依赖：
+
+```bash
+npm run install
+```
+
+运行：
+
+```bash
+npm run dev
+```
+
+打包：
+
+```bash
+npm run build
+```
 
 ## 效果截图
 
