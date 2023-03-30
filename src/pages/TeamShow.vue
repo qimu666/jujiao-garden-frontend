@@ -10,7 +10,7 @@
   <div class="center">
     <img class="img" :src="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture">
   </div>
-  <van-divider>霸气侧漏队</van-divider>
+  <van-divider>{{ team.teamName }}</van-divider>
   <van-cell :value="team.teamName" center icon="award-o">
     <template #title>
       <span class="custom-title">队伍名称</span>
