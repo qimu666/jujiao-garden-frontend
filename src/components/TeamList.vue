@@ -90,8 +90,9 @@
           </span>
         </div>
         <span v-if="!isUserInTeam(team)">
-        <van-button plain size="mini" type="primary" icon="plus" @click="joinTeam(team.id,team.teamStatus)">加入队伍
-        </van-button>
+          <van-button v-if="team.maxNum + 2 - team.userSet.length <= 0" plain size="mini" type="primary" icon="hot-o" disabled> 已满员 </van-button>
+        <van-button v-else plain size="mini" type="primary" icon="plus"
+                    @click="joinTeam(team.id,team.teamStatus)">加入队伍</van-button>
         </span>
         <span v-if="isUserInTeam(team)">
      <span v-if="loginUser.id===team.user.id||loginUser.userRole===1">
@@ -101,7 +102,8 @@
         <div style="padding-bottom: 2px"></div>
           <van-button plain size="small" type="danger" icon="fail" @click="disbandTeam(team.id)">解散队伍</van-button>
          <template #reference>
-         <van-button type="primary" icon="ellipsis" @click="showPopover[team.id] = !showPopover[team.id]" plain size="mini">更多操作</van-button>
+         <van-button type="primary" icon="ellipsis" @click="showPopover[team.id] = !showPopover[team.id]" plain
+                     size="mini">更多操作</van-button>
      </template>
        </van-popover>
 
@@ -169,7 +171,7 @@ const sendJoin = async () => {
   toSend.value = false
 }
 const showPopover = ref<{ [key: number]: boolean }>({});
-showPopover.value=false
+showPopover.value = false
 
 const transferUser = ref(false);
 const transferUserAccount = ref();
