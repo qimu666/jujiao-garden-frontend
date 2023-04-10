@@ -81,6 +81,13 @@ const teams = () => {
 }
 
 const addUser = () => {
+  router.push({
+    path: "/chat",
+    query: {
+      id: user.value.id,
+      username: user.value.username
+    }
+  })
   showSuccessToast("添加成功")
 }
 onMounted(async () => {

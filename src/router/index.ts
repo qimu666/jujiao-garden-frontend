@@ -1,6 +1,4 @@
 import * as VueRouter from 'vue-router'
-
-
 const routes = [
     {path: '/', component: () => import("../pages/IndexPage.vue")},
     {path: '/team', component: () => import("../pages/TeamPage.vue")},
@@ -15,7 +13,7 @@ const routes = [
     {path: '/user/show/:userId', name: 'userShow', component: () => import("../pages/UserShow.vue")},
     {path: '/user/team', name: "userTeamPage", component: () => import("../pages/UserTeamPage.vue")},
     {path: '/user/edit', component: () => import("../pages/UserEdit.vue")},
-    {path: '/im', component: () => import("../pages/im.vue")},
+    {path: '/chat', component: () => import("../pages/ChatPage.vue")},
     {path: '/search', component: () => import("../pages/search/UserSearch.vue")},
 ]
 
