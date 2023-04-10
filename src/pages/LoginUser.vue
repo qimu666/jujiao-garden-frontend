@@ -31,8 +31,7 @@ const onSubmit = async () => {
   <van-row justify="center">
     <h3>"聚交园 —— 寻找志同道合的朋友"</h3>
   </van-row>
-  <div style="padding-top: 20px"/>
-  <div style="margin: 14px">
+  <div style="margin: 14px;padding-top: 20px">
     <van-form @submit="onSubmit">
       <van-cell-group inset>
         <van-field

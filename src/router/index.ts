@@ -15,6 +15,7 @@ const routes = [
     {path: '/user/show/:userId', name: 'userShow', component: () => import("../pages/UserShow.vue")},
     {path: '/user/team', name: "userTeamPage", component: () => import("../pages/UserTeamPage.vue")},
     {path: '/user/edit', component: () => import("../pages/UserEdit.vue")},
+    {path: '/im', component: () => import("../pages/im.vue")},
     {path: '/search', component: () => import("../pages/search/UserSearch.vue")},
 ]
 
