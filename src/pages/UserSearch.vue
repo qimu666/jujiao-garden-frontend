@@ -36,9 +36,9 @@
 import {onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {showFailToast, showSuccessToast} from "vant";
-import getCurrent from "../../service/currentUser";
-import userTagsList from "../../constants/UserTagsList";
-import request from "../../service/myAxios";
+import getCurrent from "../service/currentUser";
+import userTagsList from "../constants/UserTagsList";
+import request from "../service/myAxios";
 
 const newTagSearch = ref('');
 const existedTagSearchList = ref([]);
@@ -113,7 +113,7 @@ watch(existedTagSearchList, (newList) => {
 </script>
 
 <style scoped>
-@import "../../assets/css/userSearch.css";
+@import "../assets/css/userSearch.css";
 
 :deep(.van-search__field) {
   flex: 1;

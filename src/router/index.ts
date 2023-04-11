@@ -13,8 +13,9 @@ const routes = [
     {path: '/user/show/:userId', name: 'userShow', component: () => import("../pages/UserShow.vue")},
     {path: '/user/team', name: "userTeamPage", component: () => import("../pages/UserTeamPage.vue")},
     {path: '/user/edit', component: () => import("../pages/UserEdit.vue")},
+    {path: '/friends', component: () => import("../pages/FriendsPage.vue")},
     {path: '/chat', component: () => import("../pages/ChatPage.vue")},
-    {path: '/search', component: () => import("../pages/search/UserSearch.vue")},
+    {path: '/search', component: () => import("../pages/UserSearch.vue")},
 ]
 
 const router = VueRouter.createRouter({

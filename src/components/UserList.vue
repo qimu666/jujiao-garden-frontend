@@ -30,12 +30,12 @@
             <span v-if="!user.tags||user.tags.length<=0">该用户暂时没有设置</span>
           </template>
         </van-card>
-        <template #right>
-          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary"
-                      @click="addUser"/>
-          <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"
-                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
-        </template>
+<!--        <template #right>-->
+<!--          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary"-->
+<!--                      @click="addUser(user.id,user.username)"/>-->
+<!--          <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"-->
+<!--                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>-->
+<!--        </template>-->
       </van-swipe-cell>
       <div style="padding-top: 5px"></div>
     </div>
@@ -58,7 +58,6 @@ const users = ref<UserType[]>([])
 const searchText = ref('');
 
 const loginUser = ref({})
-
 const {tags} = route.query
 
 const onSearch = async () => {
@@ -80,11 +79,6 @@ const queryUser = async () => {
   }
   users.value = userList
   jsonParseTag(userList)
-
-}
-
-const addUser = () => {
-  showSuccessToast('添加');
 }
 
 const deleteUser = (userId: number) => {

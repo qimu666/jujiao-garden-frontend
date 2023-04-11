@@ -14,6 +14,5 @@ import BasicLayout from "./layouts/BasicLayout.vue";
 #app {
   padding: 0 0;
   margin: 0 auto;
-  /*text-align: center*/
 }
 </style>

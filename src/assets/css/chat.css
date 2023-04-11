@@ -73,18 +73,19 @@
 
 .input-text {
     width: 100%;
-    border: none;
-    padding: 7px 10px;
+    border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
+    padding: 8px 10px;
     outline: none;
     resize: none;
     max-height: 130px;
     overflow-y: auto;
     font-size: 15px;
-
 }
 
 .input-send-button {
-    height: 51px;
+    height: 50px;
+    border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
+    border-left:  rgba(150, 151, 153, 0.76) 1px solid;
     background-color: #ffffff;
     color: #0094fe;
     width: 60px;

@@ -23,7 +23,6 @@
       <span class="custom-title">联系方式</span>
     </template>
   </van-cell>
-
   <van-cell title="邮箱" @click="showPopup" icon="envelop-o">
     <template #value>
       <div v-if="user.email" class="van-ellipsis">
@@ -41,7 +40,7 @@
   <van-cell title="简介" icon="chat-o">
     <template #value>
       <div v-if="user.userDesc" class="van-multi-ellipsis--l3">
-        {{ user.userDesc }}
+        {{ user?.userDesc }}
       </div>
       <div v-if="!user.userDesc" class="van-ellipsis">
         暂无简介
@@ -49,9 +48,16 @@
     </template>
   </van-cell>
   <van-space style="margin: 13px" direction="vertical" fill>
-    <van-button type="primary" v-if="!loginUser.userIds.includes(user.id)" @click="addUser" block>添加好友
-    </van-button>
-    <van-button type="primary" v-else @click="chatUser" block>联系好友</van-button>
+    <div v-if="!loginUser.userIds.includes(user?.id)">
+      <van-button type="primary" @click="addUser" block>
+        添加好友
+      </van-button>
+    </div>
+    <div v-else>
+      <van-button type="primary" @click="chatUser" block>联系好友</van-button>
+      <div style="padding-top: 10px;"></div>
+      <van-button type="danger" @click="deleteFriend" block>删除好友</van-button>
+    </div>
   </van-space>
   <copyright/>
 </template>
@@ -59,7 +65,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {showFailToast, showSuccessToast} from "vant";
+import {showConfirmDialog, showFailToast, showSuccessToast} from "vant";
 import {genderMap} from "../model/userMap";
 import {defaultPicture} from "../common/userCommon";
 import request from "../service/myAxios";
@@ -102,16 +108,40 @@ const chatUser = () => {
   })
 }
 
-
-const addUser = () => {
-  showSuccessToast("添加成功")
+const addUser = async () => {
+  showConfirmDialog({
+    message: '请确认是否添加' + user.value.username + '为好友?',
+  }).then(async () => {
+    const add = await request.post(`/user/addUser/${user.value.id}`, {})
+    if (add) {
+      loginUser.value.userIds.push(user.value.id)
+      showSuccessToast("添加成功")
+    }
+  }).catch(() => {
+    showSuccessToast("修改成功")
+  });
 }
+
+const deleteFriend = async () => {
+  showConfirmDialog({
+    message: '请确认是否删除好友?',
+  }).then(async () => {
+    const deleteFriend = await request.post(`/user/deleteFriend/${user.value.id}`, {})
+    if (deleteFriend) {
+      loginUser.value.userIds = loginUser.value.userIds.filter(id => id !==user.value.id)
+      showSuccessToast("删除成功")
+    }
+  }).catch(() => {
+    showSuccessToast("修改成功")
+  });
+
+}
+
 onMounted(async () => {
   user.value = await request.get(`/user/${route.params.userId}`)
   const currentUser = await getCurrent()
   loginUser.value.user = currentUser
   loginUser.value.userIds = JSON.parse(currentUser.userIds)
-  console.log()
 })
 </script>
 

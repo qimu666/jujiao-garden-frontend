@@ -10,8 +10,9 @@
   </div>
   <van-tabbar route>
     <van-tabbar-item icon="search" name="index" replace to="/">推荐</van-tabbar-item>
+    <van-tabbar-item icon="friends-o" name="friends" replace to="/friends">好友</van-tabbar-item>
     <van-tabbar-item icon="home-o" name="team" replace to="/team">队伍</van-tabbar-item>
-    <van-tabbar-item icon="chat-o" name="chat" replace to="/chat">聊天</van-tabbar-item>
+<!--    <van-tabbar-item icon="chat-o" name="chat" replace to="/chat">聊天</van-tabbar-item>-->
     <van-tabbar-item icon="home-o" name="user" replace to="/user">我的</van-tabbar-item>
   </van-tabbar>
 </template>

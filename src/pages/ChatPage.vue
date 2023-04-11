@@ -14,6 +14,7 @@ import {useRoute} from "vue-router";
 import {showFailToast} from "vant";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
+import {defaultPicture} from "../common/userCommon";
 
 const route = useRoute()
 const stats = ref({
@@ -56,9 +57,9 @@ onMounted(async () => {
         })
     chaheMessage.forEach(chat => {
       if (chat.type === true) {
-          createContent(null, chat.formUser, chat.text)
+        createContent(null, chat.formUser, chat.text)
       } else {
-          createContent(chat.toUser, null, chat.text)
+        createContent(chat.toUser, null, chat.text)
       }
     })
   }
@@ -72,8 +73,8 @@ const init = () => {
     showFailToast("您的浏览器不支持WebSocket")
   } else {
     // 线上
-    // let socketUrl = `wss://qimuu.icu/api/websocket/` + uid;
-    let socketUrl = `ws://localhost:8080/api/websocket/` + uid;
+    let socketUrl = `wss://qimuu.icu/api/websocket/` + uid;
+    // let socketUrl = `ws://localhost:8080/api/websocket/` + uid;
     if (socket != null) {
       socket.close();
       socket = null;
@@ -86,8 +87,11 @@ const init = () => {
     };
     //  浏览器端收消息，获得从服务端发送过来的文本消息
     socket.onmessage = function (msg) {
-      // console.log("收到数据====" + msg.data)
-      let data = JSON.parse(msg.data)  // 对收到的json数据进行解析， 类似这样的： {"users": [{"username": "zhang"},{ "username": "admin"}]}
+      let data = JSON.parse(msg.data)// 对收到的json数据进行解析， 类似这样的： {"users": [{"username": "zhang"},{ "username": "admin"}]}
+      if (data.error) {
+        showFailToast(data.error)
+        return
+      }
       if (data.users) {  // 获取在线人员信息
         stats.value.users = data.users.filter(user => {
           return user.id !== uid
@@ -125,7 +129,7 @@ const send = () => {
   if (stats.value.chatUser.id === 0) {
     return;
   }
-  if (stats.value.chatUser.id === stats.value.user.id){
+  if (stats.value.chatUser.id === stats.value.user.id) {
     showFailToast("不能给自己发信息")
     return;
   }
@@ -156,14 +160,14 @@ const createContent = (remoteUser, nowUser, text) => {  // 这个方法是用来
   if (nowUser) { // nowUser 表示是否显示当前用户发送的聊天消息，绿色气泡
     html = `
     <div class="message self">
-      <img class="avatar" src=${nowUser.userAvatarUrl}>
+      <img class="avatar" src=${nowUser.userAvatarUrl ?? defaultPicture}>
       <p class="text">${text}</p>
     </div>
 `
   } else if (remoteUser) {   // remoteUser表示远程用户聊天消息，蓝色的气泡
     html = `
      <div class="message other">
-      <img class="avatar" src=${remoteUser.userAvatarUrl}>
+      <img class="avatar" src=${remoteUser.userAvatarUrl ?? defaultPicture}>
       <p class="text">${text}</p>
     </div>
 `
