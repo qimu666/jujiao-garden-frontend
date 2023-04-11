@@ -1,18 +1,10 @@
 <template>
-  <div style="padding-bottom: 100px;">
-    <van-divider
-        :style="{ color: '#000000', borderColor: '#969799', padding: '15px 0',margin:0 }"
-    >
-      {{ stats.chatUser.username }}
-    </van-divider>
+  <div class="chat-container">
+    <p class="heard">{{ stats.chatUser.username }}</p>
     <div class="content" v-html="stats.content"></div>
-    <div class="footer">
-      <textarea placeholder="聊点什么吧...." v-model="stats.text" class="text"></textarea>
-      <div class="send">
-        <van-button size="normal" class="send-button" @keyup.enter="send" @click="send">
-          发送
-        </van-button>
-      </div>
+    <div class="send">
+      <textarea placeholder="聊点什么吧...." v-model="stats.text" @keyup.enter="send" class="input-text"></textarea>
+      <input class="input-send-button" type="button" @click="send" value="发送">
     </div>
   </div>
 </template>
@@ -21,9 +13,9 @@ import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {showFailToast} from "vant";
 import getCurrent from "../service/currentUser";
+import request from "../service/myAxios";
 
 const route = useRoute()
-let socket;
 const stats = ref({
   user: {
     id: 0,
@@ -36,27 +28,52 @@ const stats = ref({
     id: 0,
     username: ''
   },
+  chatEnum: {
+    PRIVATE_CHAT: 1,
+    PUBLIC_CHAT: 2
+  },
+  chatType: null,
   text: "",
   messages: [],
-  cacheMessage: [[]],
   content: ''
 })
-let html
+
 onMounted(async () => {
-  stats.value.chatUser.id = route.query.id
-  stats.value.chatUser.username = route.query.username
+  stats.value.chatType = stats.value.chatEnum.PUBLIC_CHAT
+  let {id, username, type} = route.query
+  stats.value.chatUser.id = Number.parseInt(id)
+  stats.value.chatUser.username = username
+  if (type && Number.parseInt(type) !== stats.value.chatEnum.PUBLIC_CHAT) {
+    stats.value.chatType = stats.value.chatEnum.PRIVATE_CHAT
+  }
   stats.value.user = await getCurrent()
+  if (stats.value.chatType === stats.value.chatEnum.PRIVATE_CHAT) {
+    const chaheMessage = await request.post("/chat/private",
+        {
+          fromId: stats.value.user.id,
+          toId: stats.value.chatUser.id,
+          chatType: stats.value.chatType
+        })
+    chaheMessage.forEach(chat => {
+      if (chat.type === true) {
+          createContent(null, chat.formUser, chat.text)
+      } else {
+          createContent(chat.toUser, null, chat.text)
+      }
+    })
+  }
   init()
 })
 
+let socket;
 const init = () => {
-  stats.value.cacheMessage = []
   let uid = stats.value.user.id;
   if (typeof (WebSocket) == "undefined") {
     showFailToast("您的浏览器不支持WebSocket")
   } else {
-    let socketUrl = `wss://qimuu.icu/api/websocket/` + uid;
-    // console.log(socketUrl)
+    // 线上
+    // let socketUrl = `wss://qimuu.icu/api/websocket/` + uid;
+    let socketUrl = `ws://localhost:8080/api/websocket/` + uid;
     if (socket != null) {
       socket.close();
       socket = null;
@@ -78,7 +95,15 @@ const init = () => {
         // console.log(stats.value.users)// 获取当前连接的所有用户信息，并且排除自身，自己不会出现在自己的聊天列表里
       } else {
         // 如果服务器端发送过来的json数据 不包含 users 这个key，那么发送过来的就是聊天文本json数据
-        if (stats.value.user.id === data.toUser.id) {
+        let flag;
+        if (stats.value.chatType === stats.value.chatEnum.PRIVATE_CHAT) {
+          // 单聊
+          flag = (uid === data.toUser.id && stats.value.chatUser.id === data.formUser.id)
+        } else {
+          // 群聊
+          flag = (data.formUser.id !== uid)
+        }
+        if (flag) {
           stats.value.messages.push(data)
           // 构建消息内容
           createContent(data.formUser, null, data.text)
@@ -100,7 +125,11 @@ const send = () => {
   if (stats.value.chatUser.id === 0) {
     return;
   }
-  if (!stats.value.text) {
+  if (stats.value.chatUser.id === stats.value.user.id){
+    showFailToast("不能给自己发信息")
+    return;
+  }
+  if (!stats.value.text.trim()) {
     showFailToast("请输入内容")
   } else {
     if (typeof (WebSocket) == "undefined") {
@@ -111,9 +140,10 @@ const send = () => {
         fromId: stats.value.user.id,
         toId: stats.value.chatUser.id,
         text: stats.value.text,
+        chatType: stats.value.chatType
       }
       socket.send(JSON.stringify(message));
-      stats.value.messages.push({type: 1, user: stats.value.user.id, text: stats.value.text})
+      stats.value.messages.push({user: stats.value.user.id, text: stats.value.text})
       createContent(null, stats.value.user, stats.value.text)
       stats.value.text = '';
     }
@@ -122,94 +152,25 @@ const send = () => {
 
 const createContent = (remoteUser, nowUser, text) => {  // 这个方法是用来将 json的聊天消息数据转换成 html的。
   // 当前用户消息
+  let html;
   if (nowUser) { // nowUser 表示是否显示当前用户发送的聊天消息，绿色气泡
-    html = ` <div style="padding: 5px 0">
-    <div style="text-align: right; padding-right: 10px">
-      <div class="tip left"  id="div_text"> ${text}</div>
-      <img src=${nowUser.userAvatarUrl} class="img">
+    html = `
+    <div class="message self">
+      <img class="avatar" src=${nowUser.userAvatarUrl}>
+      <p class="text">${text}</p>
     </div>
-  </div>`;
+`
   } else if (remoteUser) {   // remoteUser表示远程用户聊天消息，蓝色的气泡
-    html = `<div style="padding: 5px 0">
-    <div  style="text-align: left; padding-left: 10px">
-      <img src=${remoteUser.userAvatarUrl} class="img">
-      <div class="tip right"  id="div_text"> ${text} </div>
+    html = `
+     <div class="message other">
+      <img class="avatar" src=${remoteUser.userAvatarUrl}>
+      <p class="text">${text}</p>
     </div>
-  </div>`;
+`
   }
   stats.value.content += html;
 }
 </script>
-
 <style>
-.tip {
-  color: white;
-  text-align: center;
-  border-radius: 10px;
-  font-family: sans-serif;
-  padding: 10px;
-  width: auto;
-  display: inline-block !important;
-  display: inline;
-}
-
-.content {
-  overflow: auto;
-}
-
-.img {
-  width: 40px;
-  height: 40px;
-  vertical-align: middle;
-  border-radius: 50%;
-}
-
-#div_text {
-  max-width: 140px;
-  font-size: 16px;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.right {
-  background-color: deepskyblue;
-}
-
-.left {
-  background-color: forestgreen;
-}
-
-.footer {
-  height: 150px;
-  width: 100%;
-  position: fixed;
-  bottom: 22px;
-  display: flex;
-  align-items: center;
-}
-
-.text {
-  height: 80px;
-  background-color: #f3f4f3;
-  width: 100%;
-  border: none;
-  border-top: 1px solid #ccc;
-  font-size: 16px;
-  padding: 7px 10px;
-  border-bottom: 1px solid #ccc;
-  outline: none;
-  resize: none;
-  max-height: 130px;
-  overflow-y: auto;
-}
-
-.send {
-  text-align: right;
-}
-
-.send-button {
-  font-size: 14px;
-  height: 96px;
-  width: 60px
-}
+@import "../assets/css/chat.css";
 </style>

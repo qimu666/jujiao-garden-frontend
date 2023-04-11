@@ -49,7 +49,9 @@
     </template>
   </van-cell>
   <van-space style="margin: 13px" direction="vertical" fill>
-    <van-button type="primary" @click="addUser" block>添加好友</van-button>
+    <van-button type="primary" v-if="!loginUser.userIds.includes(user.id)" @click="addUser" block>添加好友
+    </van-button>
+    <van-button type="primary" v-else @click="chatUser" block>联系好友</van-button>
   </van-space>
   <copyright/>
 </template>
@@ -57,10 +59,11 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {showSuccessToast} from "vant";
+import {showFailToast, showSuccessToast} from "vant";
 import {genderMap} from "../model/userMap";
 import {defaultPicture} from "../common/userCommon";
 import request from "../service/myAxios";
+import getCurrent from "../service/currentUser";
 
 const show = ref(false);
 const showPopup = () => {
@@ -70,6 +73,10 @@ const showPopup = () => {
 const route = useRoute()
 const router = useRouter()
 const user = ref({})
+const loginUser = ref({
+  user: {},
+  userIds: []
+})
 
 const teams = () => {
   router.push({
@@ -80,18 +87,31 @@ const teams = () => {
   })
 }
 
-const addUser = () => {
+const chatUser = () => {
+  if (!loginUser.value.userIds.includes(user.value.id)) {
+    showFailToast("该用户暂时不是您的好友")
+    return
+  }
   router.push({
     path: "/chat",
     query: {
       id: user.value.id,
-      username: user.value.username
+      username: user.value.username,
+      type: 1
     }
   })
+}
+
+
+const addUser = () => {
   showSuccessToast("添加成功")
 }
 onMounted(async () => {
   user.value = await request.get(`/user/${route.params.userId}`)
+  const currentUser = await getCurrent()
+  loginUser.value.user = currentUser
+  loginUser.value.userIds = JSON.parse(currentUser.userIds)
+  console.log()
 })
 </script>
 

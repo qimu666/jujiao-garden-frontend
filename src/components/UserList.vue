@@ -31,7 +31,8 @@
           </template>
         </van-card>
         <template #right>
-          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary" @click="addUser"/>
+          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary"
+                      @click="addUser"/>
           <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"
                       class="delete-button child" type="danger" @click="deleteUser(user.id)"/>
         </template>
@@ -49,7 +50,7 @@ import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import request from "../service/myAxios";
 import qs from 'qs'
 import {UserType} from "../model/user";
-import {TeamListType} from "../model/team";
+
 const route = useRoute()
 const router = useRouter()
 const show_pop = ref("true")
@@ -74,18 +75,19 @@ const queryUser = async () => {
   const userList: UserType[] = await request.post("/user/search", {
     searchText: searchText.value
   })
-  if (userList.length<=0){
+  if (userList.length <= 0) {
     showFailToast("无搜索用户")
   }
   users.value = userList
   jsonParseTag(userList)
+
 }
 
 const addUser = () => {
   showSuccessToast('添加');
 }
 
-const deleteUser = (userId:number) => {
+const deleteUser = (userId: number) => {
   showConfirmDialog({
     title: "删除用户",
     message:
@@ -101,7 +103,7 @@ const deleteUser = (userId:number) => {
       })
 }
 
-const showUser = (id:number) => {
+const showUser = (id: number) => {
   router.push({
     name: 'userShow',
     params: {
@@ -110,18 +112,9 @@ const showUser = (id:number) => {
   })
 }
 
-// const userLists = async (currentPage, pageSize) => {
-//   return await request.get("/user/search", {
-//     params: {
-//       pageNum: currentPage,
-//       pageSize: pageSize
-//     }
-//   })
-// }
-
 onMounted(async () => {
   if (tags) {
-    const searchTagsList:UserType[] = await request.get(`/user/search/tags`, {
+    const searchTagsList: UserType[] = await request.get(`/user/search/tags`, {
           params: {
             tagNameList: tags
           },
@@ -136,7 +129,7 @@ onMounted(async () => {
     users.value = searchTagsList
     jsonParseTag(searchTagsList)
   } else {
-    const userList:UserType[] = await request.get("/user/search")
+    let userList: UserType[] = await request.get("/user/search")
     if (userList) {
       users.value = userList
       jsonParseTag(userList)
