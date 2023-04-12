@@ -1,14 +1,14 @@
 <template>
-    <van-search
-        v-model="searchText"
-        placeholder="请输入搜索关键词"
-        show-action
-        @search="onSearch"
-    >
-      <template #action>
-        <div style="color: #1989fa" @click="onClickButton">搜索</div>
-      </template>
-    </van-search>
+  <van-search
+      v-model="searchText"
+      placeholder="请输入搜索关键词"
+      show-action
+      @search="onSearch"
+  >
+    <template #action>
+      <div style="color: #1989fa" @click="onClickButton">搜索</div>
+    </template>
+  </van-search>
   <div v-if="!users||users.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
@@ -30,12 +30,12 @@
             <span v-if="!user.tags||user.tags.length<=0">该用户暂时没有设置</span>
           </template>
         </van-card>
-<!--        <template #right>-->
-<!--          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary"-->
-<!--                      @click="addUser(user.id,user.username)"/>-->
-<!--          <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"-->
-<!--                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>-->
-<!--        </template>-->
+        <!--        <template #right>-->
+        <!--          <van-button v-if="user?.id!==loginUser?.id" class="delete-button child" square text="添加好友" type="primary"-->
+        <!--                      @click="addUser(user.id,user.username)"/>-->
+        <!--          <van-button v-if="loginUser&&loginUser.userRole===1" square text="删除用户"-->
+        <!--                      class="delete-button child" type="danger" @click="deleteUser(user.id)"/>-->
+        <!--        </template>-->
       </van-swipe-cell>
       <div style="padding-top: 5px"></div>
     </div>
@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {showConfirmDialog, showFailToast, showNotify, showSuccessToast} from "vant";
+import {showConfirmDialog, showFailToast, showSuccessToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
 import {defaultPicture, jsonParseTag} from "../common/userCommon";
 import request from "../service/myAxios";
@@ -129,13 +129,13 @@ onMounted(async () => {
       jsonParseTag(userList)
     }
   }
-  const show_session = sessionStorage.getItem("show_pop")
-  show_pop.value = show_session ? show_session : show_pop.value
-  if (show_pop.value === "true") {
-    showNotify({message: '右滑可以添加好友', type: "primary", duration: 1000});
-    show_pop.value = "false"
-    sessionStorage.setItem('show_pop', show_pop.value)
-  }
+  // const show_session = sessionStorage.getItem("show_pop")
+  // show_pop.value = show_session ? show_session : show_pop.value
+  // if (show_pop.value === "true") {
+  //   showNotify({message: '右滑可以添加好友', type: "primary", duration: 1000});
+  //   show_pop.value = "false"
+  //   sessionStorage.setItem('show_pop', show_pop.value)
+  // }
   loginUser.value = sessionStorage.getItem("longUser") ? JSON.parse(sessionStorage.getItem("longUser")) : undefined
 })
 
