@@ -17,7 +17,9 @@
                  :src="friend.userAvatarUrl??defaultPicture" class="avatar">
           </div>
           <div class="friend-info">
-            <div @click="showUser(friend.id)" class="friend-name">{{ friend.username.slice(0, 14) }}</div>
+            <div @click="showUser(friend.id)" class="friend-name">
+              {{ friend.username.slice(0, 14) }}
+            </div>
             <div style="padding-right: 10px;" @click="chat(friend.id,friend.username)">
               <van-icon :size="28" name="chat-o"/>
             </div>
@@ -160,8 +162,10 @@ const resetColor = (event) => {
 }
 
 .friend-name {
+  display: flex;
   font-size: 16px;
   font-weight: bold;
+  align-items: center;
 }
 
 </style>

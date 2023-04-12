@@ -65,7 +65,6 @@ onMounted(async () => {
   } else {
     stats.value.chatType = stats.value.chatEnum.HALL_CHAT
   }
-  console.log(stats.value.chatType, "chatType22")
   stats.value.user = await getCurrent()
   // 私聊
   if (stats.value.chatType === stats.value.chatEnum.PRIVATE_CHAT) {
@@ -147,7 +146,6 @@ const init = () => {
       } else {
         // 如果服务器端发送过来的json数据 不包含 users 这个key，那么发送过来的就是聊天文本json数据
         let flag;
-        console.log(data)
         if (stats.value.chatType === data.chatType) {
           // 单聊
           flag = (uid === data.toUser?.id && stats.value.chatUser?.id === data.formUser?.id)
@@ -238,7 +236,7 @@ const createContent = (remoteUser, nowUser, text) => {
     <div class="message self">
     <div class="myInfo info">
       <img class="avatar" onclick="showUser(${nowUser.id})" src=${nowUser.userAvatarUrl ?? defaultPicture}>
-      <p class="username">${nowUser.username.slice(0, 4)}</p>
+      <span class="username">${nowUser.username.slice(0,5)}</>
     </div>
       <p class="text">${text}</p>
     </div>
@@ -249,7 +247,7 @@ const createContent = (remoteUser, nowUser, text) => {
      <div class="message other">
  <div class="other info">
       <img class="avatar"  onclick="showUser(${remoteUser.id})" src=${remoteUser.userAvatarUrl ?? defaultPicture}>
-      <p class="username">${remoteUser.username.slice(0, 4)}</p>
+      <span class="username">${remoteUser.username.length < 10 ?remoteUser.username: remoteUser.username.slice(0, 10)+'....'}</span>
 </div>
       <p class="text">${text}</p>
     </div>
