@@ -15,6 +15,7 @@ const routes = [
     {path: '/user/edit', component: () => import("../pages/UserEdit.vue")},
     {path: '/friends', component: () => import("../pages/FriendsPage.vue")},
     {path: '/chat', component: () => import("../pages/ChatPage.vue")},
+    {path: '/public_chat', component: () => import("../components/Chat.vue")},
     {path: '/search', component: () => import("../pages/UserSearch.vue")},
 ]
 
