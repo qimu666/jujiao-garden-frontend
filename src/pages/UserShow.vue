@@ -49,15 +49,17 @@
     </template>
   </van-cell>
   <van-space style="margin: 13px" direction="vertical" fill>
-    <div v-if="!loginUser.userIds.includes(user?.id)">
-      <van-button type="primary" @click="addUser" block>
-        添加好友
-      </van-button>
-    </div>
-    <div v-else>
-      <van-button type="primary" @click="chatUser" block>联系好友</van-button>
-      <div style="padding-top: 10px;"></div>
-      <van-button type="danger" @click="deleteFriend" block>删除好友</van-button>
+    <div v-if="loginUser.user.id!==user.id">
+      <div v-if="!loginUser.userIds.includes(user?.id)">
+        <van-button type="primary" @click="addUser" block>
+          添加好友
+        </van-button>
+      </div>
+      <div v-else>
+        <van-button type="primary" @click="chatUser" block>联系好友</van-button>
+        <div style="padding-top: 10px;"></div>
+        <van-button type="danger" @click="deleteFriend" block>删除好友</van-button>
+      </div>
     </div>
   </van-space>
   <copyright/>
@@ -129,7 +131,7 @@ const deleteFriend = async () => {
   }).then(async () => {
     const deleteFriend = await request.post(`/user/deleteFriend/${user.value.id}`, {})
     if (deleteFriend) {
-      loginUser.value.userIds = loginUser.value.userIds.filter(id => id !==user.value.id)
+      loginUser.value.userIds = loginUser.value.userIds.filter(id => id !== user.value.id)
       showSuccessToast("删除成功")
     }
   }).catch(() => {

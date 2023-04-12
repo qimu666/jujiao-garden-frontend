@@ -144,7 +144,6 @@ const init = () => {
           return user.id !== uid
         })
         // 获取当前连接的所有用户信息，并且排除自身，自己不会出现在自己的聊天列表里
-        // console.log(stats.value.users)
       } else {
         // 如果服务器端发送过来的json数据 不包含 users 这个key，那么发送过来的就是聊天文本json数据
         let flag;
@@ -234,7 +233,10 @@ const createContent = (remoteUser, nowUser, text) => {
     // nowUser 表示是否显示当前用户发送的聊天消息，绿色气泡
     html = `
     <div class="message self">
+    <div class="myInfo info">
       <img class="avatar" onclick="showUser(${nowUser.id})" src=${nowUser.userAvatarUrl ?? defaultPicture}>
+      <p class="username">${nowUser.username.slice(0,4)}</p>
+    </div>
       <p class="text">${text}</p>
     </div>
 `
@@ -242,7 +244,10 @@ const createContent = (remoteUser, nowUser, text) => {
     // remoteUser表示远程用户聊天消息，灰色的气泡
     html = `
      <div class="message other">
+ <div class="other info">
       <img class="avatar"  onclick="showUser(${remoteUser.id})" src=${remoteUser.userAvatarUrl ?? defaultPicture}>
+      <p class="username">${remoteUser.username.slice(0,4)}</p>
+</div>
       <p class="text">${text}</p>
     </div>
 `
