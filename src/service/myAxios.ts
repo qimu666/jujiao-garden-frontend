@@ -2,7 +2,6 @@ import axios from "axios";
 import {showFailToast} from "vant";
 import router from "../router";
 
-
 const request = axios.create({
     // @ts-ignore
     baseURL: process.env.NODE_ENV === "development" ? 'http://localhost:8080/api' : 'https://qimuu.icu/api',
@@ -37,8 +36,7 @@ request.interceptors.response.use(function (response) {
     toLogin()
     return Promise.reject(error);
 });
-
 const toLogin = () => {
-    router.replace("/user/login").catch(e => console.log(e))
+    router.push("/user/login").catch(e => console.log(e))
 }
 export default request

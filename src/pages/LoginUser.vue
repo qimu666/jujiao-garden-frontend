@@ -17,7 +17,7 @@ const onSubmit = async () => {
   if (loginUser) {
     sessionStorage.setItem("longUser", loginUser ? JSON.stringify(loginUser) : undefined)
     showSuccessToast('登陆成功')
-    await router.push("/")
+    await router.back()
   }
 };
 </script>

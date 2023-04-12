@@ -3,6 +3,7 @@
     <van-empty image="search" description="暂无数据"/>
   </div>
   <div v-else>
+    <div style="padding-top: 5px"></div>
     <div class="center">
       <van-uploader :after-read="afterRead"
                     :max-count="1"

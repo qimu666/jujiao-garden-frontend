@@ -68,7 +68,7 @@ const chat = (id, username) => {
     query: {
       id: id,
       username: username,
-      type: 1
+      userType: 1
     }
   })
 }
@@ -80,9 +80,7 @@ const changeColor = (event) => {
 const resetColor = (event) => {
   event.currentTarget.style.backgroundColor = '#fff';
 }
-
 </script>
-
 <style scoped>
 .friend-list {
   padding: 10px;

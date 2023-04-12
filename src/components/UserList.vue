@@ -1,14 +1,14 @@
 <template>
-  <van-search
-      v-model="searchText"
-      placeholder="请输入搜索关键词"
-      show-action
-      @search="onSearch"
-  >
-    <template #action>
-      <div style="color: #1989fa" @click="onClickButton">搜索</div>
-    </template>
-  </van-search>
+    <van-search
+        v-model="searchText"
+        placeholder="请输入搜索关键词"
+        show-action
+        @search="onSearch"
+    >
+      <template #action>
+        <div style="color: #1989fa" @click="onClickButton">搜索</div>
+      </template>
+    </van-search>
   <div v-if="!users||users.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
   </div>
@@ -144,4 +144,12 @@ onMounted(async () => {
 <style scoped>
 @import "../assets/css/userList.css";
 @import "../assets/css/public.css";
+
+:deep(.van-search__field) {
+  flex: 1;
+  align-items: center;
+  padding: 0 var(--van-padding-xs) 0 0;
+  height: var(--van-search-input-height);
+  background-color: transparent;
+}
 </style>

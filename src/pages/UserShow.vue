@@ -1,4 +1,5 @@
 <template>
+  <div style="padding-top: 5px"></div>
   <div class="center">
     <img class="img" :src="user.userAvatarUrl?user.userAvatarUrl:defaultPicture">
   </div>
@@ -103,7 +104,7 @@ const chatUser = () => {
     query: {
       id: user.value.id,
       username: user.value.username,
-      type: 1
+      userType: 1
     }
   })
 }

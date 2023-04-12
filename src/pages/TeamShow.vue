@@ -36,6 +36,11 @@
       <span class="custom-title">队伍描述</span>
     </template>
   </van-cell>
+  <van-cell is-link @click="toChat" center icon="chat-o">
+    <template #title>
+      <span class="custom-title">队伍聊天室</span>
+    </template>
+  </van-cell>
   <div style="margin-bottom: 10px"></div>
   <div v-if="!userSet||userSet.length <=0" class="null">
     <van-empty image="search" description="暂无数据"/>
@@ -106,6 +111,17 @@ onMounted(async () => {
   jsonParseTag(users.userSet)
   loginUser.value = sessionStorage.getItem("longUser") ? JSON.parse(sessionStorage.getItem("longUser")) : undefined
 })
+
+const toChat = () => {
+  router.push({
+    path: "/chat",
+    query: {
+      teamId: team.value.id,
+      teamName: team.value.teamName,
+      teamType: 2
+    }
+  })
+}
 
 const addUser = () => {
   showSuccessToast('添加');

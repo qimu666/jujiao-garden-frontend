@@ -4,7 +4,8 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
+    overflow-y: auto;
 }
 
 .message {
@@ -14,15 +15,19 @@
 }
 
 .content {
-    padding-top: 5px;
-    padding-bottom: 40px;
+    padding-top: 18px;
+    padding-bottom: 57px;
     display: flex;
     flex-direction: column
 }
 
 .heard {
+    position: fixed;
     height: 30px;
+    margin-top: -5px;;
+    width: 100%;
     align-self: center;
+    background-color: #fff;
     font-size: 18px;
     text-align: center;
     line-height: 30px;
@@ -73,6 +78,7 @@
 
 .input-text {
     width: 100%;
+    height:62px;
     border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
     padding: 8px 10px;
     outline: none;
@@ -83,21 +89,24 @@
 }
 
 .input-send-button {
-    height: 50px;
+    height: 79px;
     border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
-    border-left:  rgba(150, 151, 153, 0.76) 1px solid;
+    border-left: rgba(150, 151, 153, 0.76) 0.5px solid;
     background-color: #ffffff;
+    border-radius: 4px;
     color: #0094fe;
-    width: 60px;
+    width: 80px;
+    line-height: 79px;
+    text-align: center;
     padding-right: 3px;
 }
 
 .send {
-    height: 60px;
+    height: 100px;
     width: 100%;
     flex: 1;
     position: fixed;
-    bottom: 20px;
+    bottom: 5px;
     display: flex;
     align-items: center;
     padding-bottom: 20px;
