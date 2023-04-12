@@ -12,8 +12,10 @@
             class="friend-item"
             @mousedown="changeColor($event)"
             @touchstart="changeColor($event)" @mouseup="resetColor($event)" @touchend="resetColor($event)">
-          <img @click="showUser(friend.id)"
-               :src="friend.userAvatarUrl??defaultPicture" class="avatar">
+          <div class="avatar-container">
+            <img @click="showUser(friend.id)"
+                 :src="friend.userAvatarUrl??defaultPicture" class="avatar">
+          </div>
           <div class="friend-info">
             <div @click="showUser(friend.id)" class="friend-name">{{ friend.username.slice(0, 14) }}</div>
             <div style="padding-right: 10px;" @click="chat(friend.id,friend.username)">
@@ -131,20 +133,23 @@ const resetColor = (event) => {
   background-color: #e6e6e6;
 }
 
-.avatar {
+.avatar-container {
   width: 40px;
   height: 40px;
+  min-width: 40px !important;
   border-radius: 50%;
-  background-color: #ccc;
+  overflow: hidden;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  margin-right: 10px;
+  align-items: center;
+  box-sizing: border-box;
 }
 
+.avatar {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
 
 .friend-info {
   margin-left: 10px;
