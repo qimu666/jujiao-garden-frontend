@@ -27,6 +27,12 @@
         <span class="custom-title">账号</span>
       </template>
     </van-cell>
+    <van-cell :value="genderMap[user.gender]" is-link icon="like-o"
+              @click="update(user.gender,'性别','gender')">
+      <template #title>
+        <span class="custom-title">性别</span>
+      </template>
+    </van-cell>
     <van-cell :value="user.contactInfo" icon="comment-o" is-link
               @click="update(user.contactInfo,'联系方式','contactInfo')">
       <template #title>
@@ -73,6 +79,7 @@ import {defaultPicture} from "../common/userCommon";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import {UserType} from "../model/user";
+import {genderMap} from "../model/userMap";
 
 const router = useRouter()
 const user = ref<UserType>()
