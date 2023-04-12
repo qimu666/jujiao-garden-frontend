@@ -1,8 +1,8 @@
 <template>
   <div class="chat-container">
     <p class="heard" v-if="stats.chatType===stats.chatEnum.HALL_CHAT">聊天厅</p>
-    <p class="heard" v-if="stats.chatType===stats.chatEnum.PRIVATE_CHAT">{{ stats.chatUser.username }}</p>
-    <p class="heard" v-if="stats.chatType===stats.chatEnum.TEAM_CHAT">{{ stats.team.teamName }}</p>
+    <p class="heard" v-if="stats.chatType===stats.chatEnum.PRIVATE_CHAT">{{ stats.chatUser.username.slice(0,14) }}</p>
+    <p class="heard" v-if="stats.chatType===stats.chatEnum.TEAM_CHAT">{{ stats.team.teamName.slice(0,14) }}</p>
     <div class="content" ref="chatRoom" v-html="stats.content"></div>
     <div class="send">
       <textarea placeholder="聊点什么吧...." v-model="stats.text" @keyup.enter="send" class="input-text"></textarea>
@@ -74,7 +74,7 @@ onMounted(async () => {
           toId: stats.value.chatUser.id,
         })
     privateMessage.forEach(chat => {
-      if (chat.type === true) {
+      if (chat.isMy === true) {
         createContent(null, chat.formUser, chat.text)
       } else {
         createContent(chat.toUser, null, chat.text)
@@ -84,7 +84,7 @@ onMounted(async () => {
   if (stats.value.chatType === stats.value.chatEnum.HALL_CHAT) {
     const hallMessage = await request.get("/chat/hallChat")
     hallMessage.forEach(chat => {
-      if (chat.type === true) {
+      if (chat.isMy === true) {
         createContent(null, chat.formUser, chat.text)
       } else {
         createContent(chat.formUser, null, chat.text)
@@ -97,7 +97,7 @@ onMounted(async () => {
           teamId: stats.value.team.teamId
         })
     teamMessage.forEach(chat => {
-      if (chat.type === true) {
+      if (chat.isMy === true) {
         createContent(null, chat.formUser, chat.text)
       } else {
         createContent(chat.formUser, null, chat.text)
