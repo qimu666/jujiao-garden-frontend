@@ -12,11 +12,11 @@
             class="friend-item"
             @mousedown="changeColor($event)"
             @touchstart="changeColor($event)" @mouseup="resetColor($event)" @touchend="resetColor($event)">
-          <img @click="showUser(friend.id)" :src="friend.userAvatarUrl??defaultPicture" class="avatar">
+          <img @click="showUser(friend.id)"
+               :src="friend.userAvatarUrl??defaultPicture" class="avatar">
           <div class="friend-info">
-            <div @click="showUser(friend.id)" class="friend-name">{{ friend.username.slice(0,14)}}</div>
-            <div @click="chat(friend.id,friend.username)"
-                 style="position: fixed;right: 20px;cursor: pointer">
+            <div @click="showUser(friend.id)" class="friend-name">{{ friend.username.slice(0, 14) }}</div>
+            <div style="padding-right: 10px;" @click="chat(friend.id,friend.username)">
               <van-icon :size="28" name="chat-o"/>
             </div>
           </div>
@@ -145,9 +145,12 @@ const resetColor = (event) => {
   margin-right: 10px;
 }
 
+
 .friend-info {
   margin-left: 10px;
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -156,8 +159,4 @@ const resetColor = (event) => {
   font-weight: bold;
 }
 
-.friend-desc {
-  font-size: 14px;
-  color: #999;
-}
 </style>

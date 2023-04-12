@@ -118,37 +118,4 @@ npm run dev
 npm run build
 ```
 
-## 效果截图
-
-### 用户登录/注册
-
-<img src="https://img.qimuu.icu/typory/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C.png" alt="登录注册" style="zoom:50%;" />
-
-### 好友列表
-
-<img src="https://img.qimuu.icu/typory/%E5%A5%BD%E5%8F%8B%E5%88%97%E8%A1%A8.png" alt="好友列表" style="zoom:43%;" />
-
-### 聊天功能
-
-![聊天展示](https://img.qimuu.icu/typory/%E8%81%8A%E5%A4%A9%E5%B1%95%E7%A4%BA.png)
-
-###  
-
-用户推荐页
-
-<img src="https://img.qimuu.icu/typory/%E7%94%A8%E6%88%B7%E6%8E%A8%E8%8D%90.png" alt="用户推荐" style="zoom:50%;" />
-
-### 根据标签搜索用户
-
-<img src="https://img.qimuu.icu/typory/%E6%A0%87%E7%AD%BE%E6%90%9C%E7%B4%A2.png" alt="标签搜索" style="zoom:50%;" />
-
-### 队伍页
-
-<img src="https://img.qimuu.icu/typory/%E9%98%9F%E4%BC%8D%E9%A1%B5.png" alt="队伍页" style="zoom:50%;" />
-
-### 个人中心页
-
-<img src="https://img.qimuu.icu/typory/%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83%E9%A1%B5.png" alt="个人中心页" style="zoom: 50%;" />
-
-**详细界面见：** [聚交园](https://qimuu.icu/) 或doc目录
 
