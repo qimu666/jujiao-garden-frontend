@@ -1,8 +1,8 @@
 <template>
   <div class="chat-container">
     <p class="heard" v-if="stats.chatType===stats.chatEnum.HALL_CHAT">聊天厅</p>
-    <p class="heard" v-if="stats.chatType===stats.chatEnum.PRIVATE_CHAT">{{ stats.chatUser.username.slice(0,14) }}</p>
-    <p class="heard" v-if="stats.chatType===stats.chatEnum.TEAM_CHAT">{{ stats.team.teamName.slice(0,14) }}</p>
+    <p class="heard" v-if="stats.chatType===stats.chatEnum.PRIVATE_CHAT">{{ stats.chatUser.username.slice(0, 14) }}</p>
+    <p class="heard" v-if="stats.chatType===stats.chatEnum.TEAM_CHAT">{{ stats.team.teamName.slice(0, 14) }}</p>
     <div class="content" ref="chatRoom" v-html="stats.content"></div>
     <div class="send">
       <textarea placeholder="聊点什么吧...." v-model="stats.text" @keyup.enter="send" class="input-text"></textarea>
@@ -53,8 +53,6 @@ const stats = ref({
 
 const chatRoom = ref(null)
 onMounted(async () => {
-  // 默认大厅聊天
-  stats.value.chatType = stats.value.chatEnum.HALL_CHAT
   let {id, username, userType, teamId, teamName, teamType} = route.query
   stats.value.chatUser.id = Number.parseInt(id)
   stats.value.team.teamId = Number.parseInt(teamId)
@@ -62,10 +60,12 @@ onMounted(async () => {
   stats.value.team.teamName = teamName
   if (userType && Number.parseInt(userType) === stats.value.chatEnum.PRIVATE_CHAT) {
     stats.value.chatType = stats.value.chatEnum.PRIVATE_CHAT
-  }
-  if (teamType && Number.parseInt(teamType) === stats.value.chatEnum.TEAM_CHAT) {
+  } else if (teamType && Number.parseInt(teamType) === stats.value.chatEnum.TEAM_CHAT) {
     stats.value.chatType = stats.value.chatEnum.TEAM_CHAT
+  } else {
+    stats.value.chatType = stats.value.chatEnum.HALL_CHAT
   }
+  console.log(stats.value.chatType, "chatType22")
   stats.value.user = await getCurrent()
   // 私聊
   if (stats.value.chatType === stats.value.chatEnum.PRIVATE_CHAT) {
@@ -147,15 +147,17 @@ const init = () => {
       } else {
         // 如果服务器端发送过来的json数据 不包含 users 这个key，那么发送过来的就是聊天文本json数据
         let flag;
-        if (stats.value.chatType === stats.value.chatEnum.PRIVATE_CHAT) {
+        console.log(data)
+        if (stats.value.chatType === data.chatType) {
           // 单聊
           flag = (uid === data.toUser?.id && stats.value.chatUser?.id === data.formUser?.id)
         }
-        if ((stats.value.chatType === stats.value.chatEnum.HALL_CHAT) || data.id === stats.value.team.teamId) {
+        if ((stats.value.chatType === data.chatType)) {
           // 大厅
           flag = (data.formUser?.id !== uid)
         }
-        if (data.teamId && stats.value.team.teamId === data.teamId) {
+        // 队伍
+        if (stats.value.chatType === data.chatType && data.teamId && stats.value.team.teamId === data.teamId) {
           flag = (data.formUser?.id !== uid)
         }
         if (flag) {
@@ -167,6 +169,7 @@ const init = () => {
             lastElement.scrollIntoView()
           })
         }
+        flag = null;
       }
     };
     //关闭事件
@@ -235,7 +238,7 @@ const createContent = (remoteUser, nowUser, text) => {
     <div class="message self">
     <div class="myInfo info">
       <img class="avatar" onclick="showUser(${nowUser.id})" src=${nowUser.userAvatarUrl ?? defaultPicture}>
-      <p class="username">${nowUser.username.slice(0,4)}</p>
+      <p class="username">${nowUser.username.slice(0, 4)}</p>
     </div>
       <p class="text">${text}</p>
     </div>
@@ -246,7 +249,7 @@ const createContent = (remoteUser, nowUser, text) => {
      <div class="message other">
  <div class="other info">
       <img class="avatar"  onclick="showUser(${remoteUser.id})" src=${remoteUser.userAvatarUrl ?? defaultPicture}>
-      <p class="username">${remoteUser.username.slice(0,4)}</p>
+      <p class="username">${remoteUser.username.slice(0, 4)}</p>
 </div>
       <p class="text">${text}</p>
     </div>

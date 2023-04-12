@@ -4,14 +4,13 @@
 
 [TOC]
 
-**本站地址：[qimuu.icu]([聚交园 (qimuu.icu)](https://qimuu.icu/))**
+**本站地址：[聚交园](https://qimuu.icu/)**
 
 **前端地址： https://github.com/qimu666/jujiao-garden-frontend**
 
 **后端地址： https://github.com/qimu666/jujiao-yuan-backend**
 
 🙏🏻 **大家喜欢这个项目的话，感谢动手点点 star**
-
 
 ## 界面展示
 
