@@ -12,6 +12,8 @@ const route = useRoute()
 
 const username = ref('');
 const password = ref('');
+
+const NOT_JUMP = ["/user/register", "/user/register"]
 const onSubmit = async () => {
   const loginUser = await request.post("/user/login", {
     "userAccount": username.value,
@@ -20,7 +22,8 @@ const onSubmit = async () => {
   if (loginUser) {
     sessionStorage.setItem("longUser", loginUser ? JSON.stringify(loginUser) : undefined)
     showSuccessToast('登陆成功')
-    await router.push(route.meta.lastRoutePath)
+    let jumpPath = !NOT_JUMP.includes(route.meta.lastRoutePath) ? route.meta.lastRoutePath : "/"
+    await router.push(jumpPath)
   }
 };
 
@@ -66,7 +69,8 @@ const onSubmit = async () => {
 
 <style scoped>
 @import "../assets/css/public.css";
-.longin{
+
+.longin {
   margin: 16px 14px 0 14px;
 }
 </style>
