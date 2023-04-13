@@ -78,6 +78,10 @@
     align-self: flex-start;
 }
 
+.admin {
+    background-color: rgba(253, 0, 0, 0.13);
+}
+
 .self .text {
     background-color: #0084ff;
     color: #fff;
