@@ -1,11 +1,20 @@
 <template>
   <div class="chat-container">
-    <div style="margin-top: -20px;" v-if="route.path==='/public_chat'"/>
+    <div v-if="route.path==='/public_chat'" style="width: 100%;position: fixed;top: 44px;">
+      <van-notice-bar
+          left-icon="volume-o"
+          scrollable
+          color="#1989fa" background="#ecf9ff"
+          text="感谢大家的光临,本项目仅供参考学习,切勿在此刷屏"
+      />
+    </div>
+    <div style="margin-top: 10px;" v-if="route.path==='/public_chat'">
+    </div>
     <div v-else class="heard">
       <p v-if="stats.chatType===stats.chatEnum.PRIVATE_CHAT">{{ stats.chatUser.username.slice(0, 14) }}</p>
       <p v-if="stats.chatType===stats.chatEnum.TEAM_CHAT">{{ stats.team.teamName.slice(0, 14) }}</p>
     </div>
-     <div class="content" ref="chatRoom" v-html="stats.content"></div>
+    <div class="content" ref="chatRoom" v-html="stats.content"></div>
     <div class="send">
       <textarea placeholder="聊点什么吧...." v-model="stats.text" @keyup.enter="send" class="input-text"></textarea>
       <input class="input-send-button" type="button" @click="send" value="发送">
@@ -19,6 +28,7 @@ import {showFailToast} from "vant";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
+
 
 const route = useRoute()
 const router = useRouter()

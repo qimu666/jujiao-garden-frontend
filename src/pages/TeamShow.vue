@@ -1,5 +1,5 @@
 <template>
-  <van-sticky>
+  <van-sticky :offset-top="40">
     <van-notice-bar v-if="team.announce"
                     left-icon="volume-o"
                     color="#1989fa" background="#ecf9ff"
@@ -8,7 +8,7 @@
   </van-sticky>
 
   <div class="center">
-    <img class="img" :src="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture">
+    <img :alt="team.teamName" class="img" :src="team.teamAvatarUrl?team.teamAvatarUrl:defaultPicture">
   </div>
   <van-divider>{{ team.teamName }}</van-divider>
   <van-cell :value="team.teamName" center icon="award-o">
