@@ -1,12 +1,15 @@
 <script setup>
+
 import {ref} from "vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {showSuccessToast} from "vant";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
 import Copyright from "../components/Copyright.vue";
 
 const router = useRouter()
+const route = useRoute()
+
 const username = ref('');
 const password = ref('');
 const onSubmit = async () => {
@@ -17,15 +20,15 @@ const onSubmit = async () => {
   if (loginUser) {
     sessionStorage.setItem("longUser", loginUser ? JSON.stringify(loginUser) : undefined)
     showSuccessToast('登陆成功')
-    await router.back()
+    await router.push(route.meta.lastRoutePath)
   }
 };
-</script>
 
+</script>
 <template>
   <div style="padding-top:60px"/>
   <div class="center">
-    <img class="img" :src="defaultPicture">
+    <img alt="聚交园" class="img" :src="defaultPicture">
   </div>
   <div style="padding-top: 20px"/>
   <van-row justify="center">

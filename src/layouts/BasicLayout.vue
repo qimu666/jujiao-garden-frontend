@@ -1,5 +1,5 @@
 <template>
-  <van-nav-bar fixed="fixed" left-arrow left-text="返回" title="聚交园" @click-right="onRight" @click-left="onLift">
+  <van-nav-bar fixed="fixed" left-arrow left-text="返回" :title="title" @click-right="onRight" @click-left="onLift">
     <template #right>
       <van-icon name="search" size="22"/>
       <span style="color: rgb(25,137,250)">标签</span>
@@ -20,8 +20,15 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
 import {ref} from "vue";
+import routers from "../router/index";
+
+const title = ref();
 
 const router = useRouter()
+
+routers.beforeEach((to) => {
+  title.value = to.meta.title || "聚交园";
+})
 
 const onLift = () => {
   router.back()
@@ -31,7 +38,6 @@ const onRight = () => {
 };
 
 const loading = ref(true);
-
 
 </script>
 

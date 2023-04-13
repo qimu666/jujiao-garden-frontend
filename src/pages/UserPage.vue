@@ -10,12 +10,12 @@
                     :max-size="5000 * 1024"
                     @oversize="onOversize">
         <div>
-          <img class="img" :src="user.userAvatarUrl ? user.userAvatarUrl :defaultPicture ">
+          <img :alt="user.username" class="img" :src="user.userAvatarUrl ? user.userAvatarUrl :defaultPicture ">
         </div>
       </van-uploader>
     </div>
     <div style="padding-top: 10px"/>
-    <van-cell :value="user.username" icon="manager-o" is-link
+    <van-cell :value="user.username.length<10?user.username:user.username.slice(0,8)+'...'" icon="manager-o" is-link
               @click="update(user.username,'昵称','username')">
       <template #title>
         <span class="custom-title">昵称</span>
@@ -79,10 +79,25 @@ import {defaultPicture} from "../common/userCommon";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import {UserType} from "../model/user";
-import {genderMap} from "../model/userMap";
+import {genderMap, roleMap, userStatus} from "../model/userMap";
+import Copyright from "../components/Copyright.vue";
 
 const router = useRouter()
-const user = ref<UserType>()
+const user = ref<UserType>({
+  "id": 0,
+  "username": "",
+  "userAccount": "",
+  "userAvatarUrl": "",
+  "gender": genderMap,
+  "email": "",
+  "contactInfo": '',
+  "userDesc": '',
+  "userStatus": userStatus,
+  "userRole": roleMap,
+  "tags": [],
+  "teamIds": [],
+  "userIds": []
+})
 const updateAvatarUrl = ref(false)
 
 const afterRead = async (file: any) => {
@@ -124,7 +139,7 @@ const update = (val: string, name: string, field: string) => {
   })
 }
 
-const tagUpdate = (tags: string, id: number, field: string) => {
+const tagUpdate = (tags: string, id: number) => {
   router.push({
     path: "/search",
     query: {
