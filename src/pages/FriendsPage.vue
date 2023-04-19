@@ -21,7 +21,7 @@
               {{ friend.username.slice(0, 14) }}
             </div>
             <div style="padding-right: 10px;" @click="chat(friend.id,friend.username)">
-              <van-icon :size="28" name="chat-o"/>
+              <van-icon :content="friend.chatCount" max="99" :size="28" name="chat-o"/>
             </div>
           </div>
         </li>

@@ -29,7 +29,6 @@ import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
 
-
 const route = useRoute()
 const router = useRouter()
 
@@ -99,7 +98,7 @@ onMounted(async () => {
       if (chat.isMy === true) {
         createContent(null, chat.formUser, chat.text)
       } else {
-        createContent(chat.formUser, null, chat.text,chat.isAdmin)
+        createContent(chat.formUser, null, chat.text, chat.isAdmin)
       }
     })
   }
@@ -112,7 +111,7 @@ onMounted(async () => {
       if (chat.isMy === true) {
         createContent(null, chat.formUser, chat.text)
       } else {
-        createContent(chat.formUser, null, chat.text,chat.isAdmin)
+        createContent(chat.formUser, null, chat.text, chat.isAdmin)
       }
     })
   }
@@ -174,7 +173,7 @@ const init = () => {
         if (flag) {
           stats.value.messages.push(data)
           // 构建消息内容
-          createContent(data.formUser, null, data.text,data.isAdmin)
+          createContent(data.formUser, null, data.text, data.isAdmin)
           nextTick(() => {
             const lastElement = chatRoom.value.lastElementChild
             lastElement.scrollIntoView()
@@ -240,7 +239,7 @@ const showUser = (id) => {
 /**
  * 这个方法是用来将 json的聊天消息数据转换成 html的。
  */
-const createContent = (remoteUser, nowUser, text,isAdmin) => {
+const createContent = (remoteUser, nowUser, text, isAdmin) => {
   // 当前用户消息
   let html;
   if (nowUser) {
@@ -260,7 +259,7 @@ const createContent = (remoteUser, nowUser, text,isAdmin) => {
       <img :alt=${remoteUser.username} class="avatar" onclick="showUser(${remoteUser.id})" src=${remoteUser.userAvatarUrl ?? defaultPicture}>
     <div class="info">
       <span class="username">${remoteUser.username.length < 10 ? remoteUser.username : remoteUser.username.slice(0, 18)}</span>
-      <p class="${isAdmin?'admin text':'text'}" >${text}</p>
+      <p class="${isAdmin ? 'admin text' : 'text'}" >${text}</p>
     </div>
     </div>
 `

@@ -125,7 +125,7 @@
     <van-field v-model="encryptionTeamPassword"
                type="password"
                :rules="[{ required: true, message: '请输入队伍口令' }]"
-               style="text-align: center;width: 150px;margin-left:125px"
+               style="text-align: center;width: 150px;margin-left: 75px;"
     />
     <div style="padding-top:8px "></div>
   </van-dialog>
@@ -134,7 +134,7 @@
     <van-field v-model="transferUserAccount"
                type="text"
                :rules="[{ required: true, message: '请输入要转让的用户账号' }]"
-               style="text-align: center;width: 150px;margin-left:125px"
+               style="text-align: center;width: 150px;margin-left: 75px;"
     />
     <div style="padding-top:8px "></div>
   </van-dialog>
@@ -390,5 +390,4 @@ const filterTeam = (teams: TeamListType[]) => {
   height: var(--van-search-input-height);
   background-color: transparent;
 }
-
 </style>

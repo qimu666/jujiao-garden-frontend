@@ -1,25 +1,25 @@
 <template>
   <div style="padding-top: 5px"></div>
   <div class="center">
-    <img :alt="user.username" class="img" :src="user.userAvatarUrl?user.userAvatarUrl:defaultPicture">
+    <img :alt="user?.username" class="img" :src="user?.userAvatarUrl?user.userAvatarUrl:defaultPicture">
   </div>
   <div style="padding-top: 15px"/>
-  <van-cell :value="user.username.length<10?user.username:user.username.slice(0,10)+'...'" icon="manager-o">
+  <van-cell :value="user?.username.length<10?user?.username:user?.username.slice(0,10)+'...'" icon="manager-o">
     <template #title>
       <span class="custom-title">昵称</span>
     </template>
   </van-cell>
-  <van-cell :value="user.userAccount" icon="user-circle-o">
+  <van-cell :value="user?.userAccount" icon="user-circle-o">
     <template #title>
       <span class="custom-title">账号</span>
     </template>
   </van-cell>
-  <van-cell :value="genderMap[user.gender]" icon="like-o">
+  <van-cell :value="genderMap[user?.gender]" icon="like-o">
     <template #title>
       <span class="custom-title">性别</span>
     </template>
   </van-cell>
-  <van-cell :value="user.contactInfo" icon="comment-o">
+  <van-cell :value="user?.contactInfo" icon="comment-o">
     <template #title>
       <span class="custom-title">联系方式</span>
     </template>
@@ -27,7 +27,7 @@
   <van-cell title="邮箱" icon="envelop-o">
     <template #value>
       <div v-if="user.email" class="van-ellipsis">
-        {{ user.email }}
+        {{ user?.email }}
       </div>
     </template>
   </van-cell>
@@ -47,9 +47,9 @@
     </template>
   </van-cell>
   <van-space style="margin: 13px" direction="vertical" fill>
-    <div v-if="loginUser.user.id!==user.id">
+    <div v-if="loginUser?.user.id!==user.id">
       <div v-if="!loginUser.userIds.includes(user?.id)">
-        <van-button type="primary" @click="addUser" block>
+        <van-button v-if="applyStatus" type="primary" @click="addUser" block>
           添加好友
         </van-button>
       </div>
@@ -60,6 +60,16 @@
       </div>
     </div>
   </van-space>
+  <van-dialog v-model:show="addUserApply" :title="'添加好友：'+user.username.slice(0,10)" show-cancel-button
+              @confirm="toAddUserApply(user.id)">
+    <div style="padding-top:8px"></div>
+    <van-field v-model="addUserApplyText"
+               type="text"
+               placeholder="我是...."
+               style="text-align: center;width: 150px;margin-left: 75px;"
+    />
+    <div style="padding-top:8px "></div>
+  </van-dialog>
   <copyright/>
 </template>
 
@@ -73,6 +83,13 @@ import request from "../service/myAxios";
 import getCurrent from "../service/currentUser";
 import {UserType} from "../model/user";
 import Copyright from "../components/Copyright.vue";
+
+const loginUser = ref({
+  user: {},
+  userIds: []
+})
+
+const applyStatus = ref(true)
 
 const route = useRoute()
 const router = useRouter()
@@ -90,10 +107,6 @@ const user = ref<UserType>({
   "tags": [],
   "teamIds": [],
   "userIds": []
-})
-const loginUser = ref({
-  user: {},
-  userIds: []
 })
 
 const teams = () => {
@@ -121,17 +134,7 @@ const chatUser = () => {
 }
 
 const addUser = async () => {
-  showConfirmDialog({
-    message: '请确认是否添加' + user.value.username + '为好友?',
-  }).then(async () => {
-    const add = await request.post(`/user/addUser/${user.value.id}`, {})
-    if (add) {
-      loginUser.value.userIds.push(user.value.id)
-      showSuccessToast("添加成功")
-    }
-  }).catch(() => {
-    showSuccessToast("修改成功")
-  });
+  addUserApply.value = true
 }
 
 const deleteFriend = async () => {
@@ -155,6 +158,17 @@ onMounted(async () => {
   loginUser.value.user = currentUser
   loginUser.value.userIds = JSON.parse(currentUser.userIds)
 })
+const addUserApply = ref(false);
+const addUserApplyText = ref();
+const toAddUserApply = async (id: number) => {
+  const status = await request.post("/friends/add", {
+    "receiveId": id,
+    "remark": addUserApplyText.value
+  })
+  if (status) {
+    showSuccessToast("申请成功")
+  }
+}
 </script>
 
 <style scoped>

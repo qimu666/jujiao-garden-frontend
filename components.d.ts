@@ -11,10 +11,12 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Chat: typeof import('./src/components/Chat.vue')['default']
     Copyright: typeof import('./src/components/Copyright.vue')['default']
+    Notice: typeof import('./src/components/icon/Notice.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TeamList: typeof import('./src/components/TeamList.vue')['default']
     UserList: typeof import('./src/components/UserList.vue')['default']
+    VanBadge: typeof import('vant/es')['Badge']
     VanButton: typeof import('vant/es')['Button']
     VanCard: typeof import('vant/es')['Card']
     VanCell: typeof import('vant/es')['Cell']

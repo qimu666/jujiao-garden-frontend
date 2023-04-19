@@ -77,6 +77,11 @@ const routes = [
         component: () => import("../pages/FriendsPage.vue")
     },
     {
+        path: '/apply',
+        meta: {title: "新的朋友",},
+        component: () => import("../pages/ApplicationRecord.vue")
+    },
+    {
         path: '/chat',
         meta: {title: "聊天",},
         component: () => import("../pages/ChatPage.vue")
