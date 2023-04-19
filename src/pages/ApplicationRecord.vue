@@ -2,7 +2,7 @@
   <van-tabs v-model:active="active" @change="onTabChange">
     <van-tab name="1" title="我收到的">
       <template #title>
-        <van-icon name="bullhorn-o" />
+        <van-icon name="bullhorn-o"/>
         我收到的
       </template>
     </van-tab>
@@ -20,7 +20,8 @@
         <li v-else v-for="friend in status.applyFriends" :key="friend.id"
             class="friend-item">
           <div class="avatar-container">
-            <img @click="showUser(friend.applyUser.id)" :src="friend.applyUser.userAvatarUrl??defaultPicture" class="avatar">
+            <img @click="showUser(friend.applyUser.id)" :src="friend.applyUser.userAvatarUrl??defaultPicture"
+                 class="avatar">
           </div>
           <div @click="showUser(friend.applyUser.id)" class="friend-info">
             <div class="friend-apply">
@@ -33,16 +34,16 @@
           </div>
           <div style="padding-right: 10px;" @click="agree(friend.applyUser.id)">
             <van-button style="width: 60px;" size="small" v-if="friend.status===0" type="primary">接受</van-button>
-            <p style="font-size:10px;color: #999;width: 60px" v-if="friend.status===1" type="primary">
-              <van-icon name="certificate"/>
+            <p class="apply" v-if="friend.status===1" type="primary">
+              <van-icon name="certificate" size="16px"/>
               已接受
             </p>
-            <p style="font-size:10px;color: #999;width: 60px" v-if="friend.status===2" type="primary">
-              <van-icon name="warning-o"/>
+            <p class="apply" v-if="friend.status===2" type="primary">
+              <van-icon name="warning-o" size="16px"/>
               已过期
             </p>
-            <p style="font-size:10px;color: #999;width: 80px" v-if="friend.status===3" type="primary">
-              <van-icon name="delete-o" />
+            <p style="font-size:14px;color: #999;width: 90px" v-if="friend.status===3" type="primary">
+              <van-icon name="delete-o" size="16px"/>
               对方已撤销
             </p>
           </div>
@@ -53,7 +54,8 @@
         <li v-else v-for="friend in status.myApplyFriends" :key="friend.id"
             class="friend-item">
           <div class="avatar-container">
-            <img @click="showUser(friend.applyUserid)" :src="friend.applyUser.userAvatarUrl??defaultPicture" class="avatar">
+            <img @click="showUser(friend.applyUserid)" :src="friend.applyUser.userAvatarUrl??defaultPicture"
+                 class="avatar">
           </div>
           <div @click="showUser(friend.applyUser.id)" class="friend-info">
             <div class="friend-apply">
@@ -66,16 +68,16 @@
           </div>
           <div style="padding-right: 10px;" @click="canceledApply(friend.id)">
             <van-button style="width: 60px;" size="small" v-if="friend.status===0" type="danger">撤销</van-button>
-            <p style="font-size:10px;color: #999;width: 70px" v-if="friend.status===1" type="primary">
-              <van-icon name="certificate"/>
+            <p style="font-size:14px;color: #999;width: 80px" v-if="friend.status===1" type="primary">
+              <van-icon name="certificate" size="16px"/>
               已被接受
             </p>
-            <p style="font-size:10px;color: #999;width: 60px" v-if="friend.status===2" type="primary">
-              <van-icon name="warning-o"/>
+            <p class="apply" v-if="friend.status===2" type="primary">
+              <van-icon name="warning-o" size="16px"/>
               已过期
             </p>
-            <p style="font-size:10px;color: #999;width: 60px" v-if="friend.status===3" type="primary">
-              <van-icon name="delete-o" />
+            <p class="apply" v-if="friend.status===3" type="primary">
+              <van-icon name="delete-o" size="16px"/>
               已撤销
             </p>
           </div>
@@ -144,6 +146,11 @@ const showUser = (id: number) => {
 </script>
 
 <style scoped>
+.apply {
+  font-size: 14px;
+  color: #999;
+  width: 80px
+}
 
 .friend-list {
   padding: 10px;
