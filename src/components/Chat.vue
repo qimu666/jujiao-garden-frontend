@@ -16,6 +16,11 @@
     </div>
     <div class="content" ref="chatRoom" v-html="stats.content"></div>
     <div class="send">
+      <V3Emoji
+          :recent="true"
+          @click-emoji="appendText"
+          :options-name="optionsName"
+      />
       <textarea placeholder="聊点什么吧...." v-model="stats.text" @keyup.enter="send" class="input-text"></textarea>
       <input class="input-send-button" type="button" @click="send" value="发送">
     </div>
@@ -28,6 +33,8 @@ import {showFailToast} from "vant";
 import getCurrent from "../service/currentUser";
 import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
+import V3Emoji from 'vue3-emoji'
+import 'vue3-emoji/dist/style.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -61,6 +68,23 @@ const stats = ref({
   messages: [],
   content: ''
 })
+
+const appendText = (val) => {
+  stats.value.text += val
+}
+
+
+const optionsName = {
+  'Smileys & Emotion': '笑脸&表情',
+  'Food & Drink': '食物&饮料',
+  'Animals & Nature': '动物&自然',
+  'Travel & Places': '旅行&地点',
+  'People & Body': '人物&身体',
+  Objects: '物品',
+  Symbols: '符号',
+  Flags: '旗帜',
+  Activities: '活动'
+};
 
 const chatRoom = ref(null)
 
@@ -277,4 +301,36 @@ window.showUser = (id) => {
 </script>
 <style>
 @import "../assets/css/chat.css";
+
+.emoji-item {
+  width: 0;
+  height: 0;
+  margin-top: -70px;
+}
+
+.pollup {
+  width: 280px;
+  height: 260px;
+  position: absolute;
+  right: 0;
+  margin-left: 10px;
+  bottom: 35px;
+  z-index: 5;
+  transition: all ease .5s;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pollup .emoji-container-item {
+  padding: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.emoji-container-open-btn {
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 </style>
