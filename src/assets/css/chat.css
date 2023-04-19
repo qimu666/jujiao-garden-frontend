@@ -91,7 +91,7 @@
     width: 100%;
     height: 62px;
     border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
-    padding: 8px  10px 8px 45px;
+    padding: 8px  10px 8px 50px;
     outline: none;
     resize: none;
     max-height: 130px;
@@ -115,7 +115,6 @@
 .send {
     height: 100px;
     width: 100%;
-    flex: 1;
     position: fixed;
     bottom: 5px;
     display: flex;

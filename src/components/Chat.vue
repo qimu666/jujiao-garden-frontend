@@ -305,7 +305,7 @@ window.showUser = (id) => {
 .emoji-item {
   width: 0;
   height: 0;
-  margin-top: -70px;
+  margin-top: -45px;
 }
 
 .pollup {
@@ -328,9 +328,9 @@ window.showUser = (id) => {
 }
 
 .emoji-container-open-btn {
-  font-size: 20px;
+  font-size: 28px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 </style>
