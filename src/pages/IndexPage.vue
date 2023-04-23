@@ -10,12 +10,17 @@
 <!--    </div>-->
 <!--  </div>-->
   <user-list/>
+  <div style="padding-top: 35px"></div>
+  <div style="position: fixed;bottom: 50px;width: 100%">
+    <copyright/>
+  </div>
 </template>
 
 <script setup>
 import {showSuccessToast} from "vant";
 import {ref} from "vue";
 import UserList from "../components/UserList.vue";
+import Copyright from "../components/Copyright.vue";
 
 const checked = ref(true);
 const cardiacSwitch = () => {

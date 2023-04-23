@@ -100,14 +100,15 @@
 }
 
 .input-send-button {
-    height: 79px;
+    height: 64px;
     border-top: rgba(150, 151, 153, 0.76) 0.5px solid;
     border-left: rgba(150, 151, 153, 0.76) 0.5px solid;
     background-color: #ffffff;
     border-radius: 4px;
     color: #0094fe;
     width: 80px;
-    line-height: 79px;
+    margin-bottom: 15px;
+    line-height: 40px;
     text-align: center;
     padding-right: 3px;
 }
