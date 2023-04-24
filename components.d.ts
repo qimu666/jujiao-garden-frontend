@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     Chat: typeof import('./src/components/Chat.vue')['default']
     Copyright: typeof import('./src/components/Copyright.vue')['default']
     Notice: typeof import('./src/components/icon/Notice.vue')['default']
+    QQLogin: typeof import('./src/components/icon/QQLogin.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TeamList: typeof import('./src/components/TeamList.vue')['default']

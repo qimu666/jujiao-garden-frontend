@@ -80,8 +80,18 @@ const getRecord =async () => {
 }
 
 onMounted(async () => {
-  applyFriendsCount.value = await onChange()
-  await getRecord()
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+  if (code){
+    const data = await request.post("/login/loginInfo", {
+      code: code
+    })
+    console.log(data)
+  }
+  if (route.path!=="/"){
+    applyFriendsCount.value = await onChange()
+    await getRecord()
+  }
 })
 const active = ref('name');
 

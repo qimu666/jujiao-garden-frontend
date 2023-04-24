@@ -21,8 +21,7 @@
         <span class="custom-title">昵称</span>
       </template>
     </van-cell>
-    <van-cell :value="user.userAccount" icon="user-circle-o" is-link
-              @click="update(user.userAccount,'账号','userAccount')">
+    <van-cell :value="user.userAccount.length>10?user.userAccount.slice(0,10):user.userAccount" icon="user-circle-o">
       <template #title>
         <span class="custom-title">账号</span>
       </template>

@@ -7,6 +7,11 @@ import request from "../service/myAxios";
 import {defaultPicture} from "../common/userCommon";
 import Copyright from "../components/Copyright.vue";
 
+const qqLogin = async () => {
+ const url = await request.get("login/qq")
+  console.log(url);
+ window.location.href=url
+}
 const router = useRouter()
 const route = useRoute()
 
@@ -29,48 +34,66 @@ const onSubmit = async () => {
 
 </script>
 <template>
-  <div style="padding-top:60px"/>
-  <div class="center">
-    <img alt="聚交园" class="img" :src="defaultPicture">
+  <div style="padding-top:60px;  margin-left: -20px;;min-width: 380px">
+    <div class="center">
+      <img alt="聚交园" class="img" :src="defaultPicture">
+    </div>
+    <div style="padding-top: 20px"/>
+    <van-row justify="center">
+      <h3>"聚交园 —— 寻找志同道合的朋友"</h3>
+    </van-row>
+    <div style="margin: 14px;padding-top: 20px">
+        <van-cell-group inset>
+          <van-field
+              v-model="username"
+              :rules="[{ required: true, message: '请填写账号!' }]"
+              label="账号"
+              name="账号"
+              placeholder="账号"
+          />
+          <van-field
+              v-model="password"
+              :rules="[{ required: true, message: '请填写密码!' }]"
+              label="密码"
+              name="密码"
+              placeholder="密码"
+              type="password"
+          />
+          <div class="longin">
+            <van-button plain class="defaultLogin" @click="onSubmit" round type="primary">
+              <van-icon name="lock"/>
+              账号密码登录
+            </van-button>
+            <van-button @click="qqLogin" class="qqLogin" plain round type="primary">
+              <van-icon name="qq"/>
+              QQ 账号登录
+            </van-button>
+          </div>
+          <van-cell title="" to="/user/register" value="还没有账号？点击注册"></van-cell>
+        </van-cell-group>
+    </div>
+    <copyright/>
   </div>
-  <div style="padding-top: 20px"/>
-  <van-row justify="center">
-    <h3>"聚交园 —— 寻找志同道合的朋友"</h3>
-  </van-row>
-  <div style="margin: 14px;padding-top: 20px">
-    <van-form @submit="onSubmit">
-      <van-cell-group inset>
-        <van-field
-            v-model="username"
-            :rules="[{ required: true, message: '请填写账号!' }]"
-            label="账号"
-            name="账号"
-            placeholder="账号"
-        />
-        <van-field
-            v-model="password"
-            :rules="[{ required: true, message: '请填写密码!' }]"
-            label="密码"
-            name="密码"
-            placeholder="密码"
-            type="password"
-        />
-      </van-cell-group>
-      <div class="longin">
-        <van-button block native-type="submit" round type="primary">
-          登录账号
-        </van-button>
-        <van-cell title="" to="/user/register" value="还没有账号？点击注册"></van-cell>
-      </div>
-    </van-form>
-  </div>
-  <copyright/>
 </template>
 
 <style scoped>
 @import "../assets/css/public.css";
 
 .longin {
-  margin: 16px 14px 0 14px;
+  margin: 16px 14px 0 12%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.defaultLogin {
+  flex: auto;
+  min-width: 140px;
+  margin-right: 10px;
+}
+
+.qqLogin {
+  flex: auto;
+  min-width: 140px;
 }
 </style>

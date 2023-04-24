@@ -1,14 +1,14 @@
 <template>
   <div style="padding-top: 5px"></div>
-<!--  <div class="xindong">-->
-<!--    <div style="float: left;">-->
-<!--      <van-icon name="like-o" size="22px"/>-->
-<!--      心动模式-->
-<!--    </div>-->
-<!--    <div style="text-align: right">-->
-<!--      <van-switch v-model="checked" size="22px" @click="cardiacSwitch()"/>-->
-<!--    </div>-->
-<!--  </div>-->
+  <!--  <div class="xindong">-->
+  <!--    <div style="float: left;">-->
+  <!--      <van-icon name="like-o" size="22px"/>-->
+  <!--      心动模式-->
+  <!--    </div>-->
+  <!--    <div style="text-align: right">-->
+  <!--      <van-switch v-model="checked" size="22px" @click="cardiacSwitch()"/>-->
+  <!--    </div>-->
+  <!--  </div>-->
   <user-list/>
   <div style="padding-top: 35px"></div>
   <div style="position: fixed;bottom: 50px;width: 100%">
