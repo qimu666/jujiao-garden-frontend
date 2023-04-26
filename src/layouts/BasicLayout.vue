@@ -86,7 +86,6 @@ onMounted(async () => {
     const data = await request.post("/login/loginInfo", {
       code: code
     })
-    console.log(data)
   }
   if (route.path!=="/"){
     applyFriendsCount.value = await onChange()

@@ -9,7 +9,7 @@
       <span class="custom-title">昵称</span>
     </template>
   </van-cell>
-  <van-cell :value="user?.userAccount" icon="user-circle-o">
+  <van-cell :value="user.userAccount" icon="user-circle-o">
     <template #title>
       <span class="custom-title">账号</span>
     </template>
@@ -24,11 +24,9 @@
       <span class="custom-title">联系方式</span>
     </template>
   </van-cell>
-  <van-cell title="邮箱" icon="envelop-o">
-    <template #value>
-      <div v-if="user.email" class="van-ellipsis">
-        {{ user?.email }}
-      </div>
+  <van-cell :value="user?.email" icon="envelop-o">
+    <template #title>
+      <span class="custom-title">邮箱</span>
     </template>
   </van-cell>
   <van-cell value="点击查看" icon="cluster-o" @click="teams" is-link>

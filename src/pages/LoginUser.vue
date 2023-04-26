@@ -8,9 +8,7 @@ import {defaultPicture} from "../common/userCommon";
 import Copyright from "../components/Copyright.vue";
 
 const qqLogin = async () => {
- const url = await request.get("login/qq")
-  console.log(url);
- window.location.href=url
+  window.location.href=await request.get("login/qq")
 }
 const router = useRouter()
 const route = useRoute()
