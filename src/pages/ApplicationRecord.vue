@@ -32,8 +32,10 @@
                 {{ friend.remark.length < 15 ? friend.remark : friend.remark.slice(0, 15) + '...' }}</p>
             </div>
           </div>
-          <div style="padding-right: 10px;" @click="agree(friend.applyUser.id)">
-            <van-button style="width: 60px;" size="small" v-if="friend.status===0" type="primary">接受</van-button>
+          <div style="padding-right: 10px;">
+            <van-button style="width: 60px;" @click="agree(friend.applyUser.id,friend.id)" size="small"
+                        v-if="friend.status===0" type="primary">接受
+            </van-button>
             <p class="apply" v-if="friend.status===1" type="primary">
               <van-icon name="certificate" size="16px"/>
               已接受
@@ -66,8 +68,10 @@
                 {{ friend.remark.length < 15 ? friend.remark : friend.remark.slice(0, 15) + '...' }}</p>
             </div>
           </div>
-          <div style="padding-right: 10px;" @click="canceledApply(friend.id)">
-            <van-button style="width: 60px;" size="small" v-if="friend.status===0" type="danger">撤销</van-button>
+          <div style="padding-right: 10px;">
+            <van-button style="width: 60px;" size="small" @click="canceledApply(friend.id)" v-if="friend.status===0"
+                        type="danger">撤销
+            </van-button>
             <p style="font-size:14px;color: #999;width: 80px" v-if="friend.status===1" type="primary">
               <van-icon name="certificate" size="16px"/>
               已被接受
@@ -109,11 +113,11 @@ const onTabChange = async (name: string) => {
     status.value.myApplyFriends = await request.get("/friends/getMyRecords")
   }
 }
-const agree = async (id: number) => {
+const agree = async (id: number, fid: number) => {
   const agree = await request.post(`/friends/agree/${id}`)
   if (agree) {
     status.value.applyFriends.forEach(apply => {
-      if (apply.applyUser.id === id) {
+      if (apply.applyUser.id === id && apply.id === fid) {
         apply.status = 1
       }
     })
