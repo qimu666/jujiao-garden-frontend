@@ -63,9 +63,12 @@ const onSubmit = () => {
     })
     if (updateData) {
       showSuccessToast("修改成功")
-      await router.push({
-        path: "/user",
-      })
+        const loginOut = await request.post("/user/loginOut", {})
+        sessionStorage.clear()
+        if (loginOut) {
+          showSuccessToast("退出成功")
+          router.replace("/user/login").catch(e => console.log(e))
+        }
     }
   }).catch(() => {
     showSuccessToast("取消修改")
